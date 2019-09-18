@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: vuetinaut
+---
+testFramework: junit
+sourceLanguage: java

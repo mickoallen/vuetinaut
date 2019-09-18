@@ -1,0 +1,10 @@
+micronaut:
+  application:
+    name: vuetinaut
+  server:
+    port: 8081
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /api-docs/**
