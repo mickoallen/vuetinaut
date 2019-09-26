@@ -2,9 +2,29 @@ micronaut:
   application:
     name: vuetinaut
   server:
-    port: 8081
+    port: ${PORT:8081}
   router:
     static-resources:
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /api-docs/**
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+      oauth:
+        enabled: true
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: yourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmom
+
+db:
+  url: ${DATABASE_URL:`postgresql://postgres:postgres@localhost:5432/postgres`}
+  min_pool: 2
+  max_pool: 5
+  connection_timeout: 20000

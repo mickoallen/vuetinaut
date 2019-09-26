@@ -1,4 +1,4 @@
-package com.mick.vuetinaut.user;
+package com.mick.vuetinaut.user.rest;
 
 import java.util.UUID;
 

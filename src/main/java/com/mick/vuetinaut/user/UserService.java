@@ -1,79 +1,57 @@
 package com.mick.vuetinaut.user;
 
 import com.mick.vuetinaut.exceptions.NotFoundException;
-import com.mick.vuetinaut.jooq.model.tables.daos.UserDao;
 import com.mick.vuetinaut.jooq.model.tables.pojos.User;
 import com.mick.vuetinaut.security.PasswordService;
+import io.reactivex.Single;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
-
-import static org.jooq.impl.DSL.field;
 
 @Singleton
 public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final PasswordService passwordService;
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Inject
     public UserService(
             final PasswordService passwordService,
-            final UserDao userDao){
+            final UserRepository userRepository) {
         this.passwordService = passwordService;
-        this.userDao = userDao;
+        this.userRepository = userRepository;
     }
 
-    public User createUser(User user) throws UsernameAlreadyExistsException {
-        List<User> users = userDao.fetchByUsername(user.getUsername());
-        if (!users.isEmpty()) {
-            throw new UsernameAlreadyExistsException("Username " + user.getUsername() + " is already taken.");
-        }
+    public Single<User> createUser(User user) throws UsernameAlreadyExistsException {
 
         user.setUuid(UUID.randomUUID());
         user.setPassword(passwordService.getPasswordHash(user.getPassword()));
         user.setDateCreated(Timestamp.from(Instant.now()));
-        userDao.insert(user);
-        return user;
+
+        return userRepository.fetchByUsername(user.getUsername())
+                .doOnSuccess(existingUser -> {
+                    logger.warn("Cannot create user. Username is already used");
+                    throw new UsernameAlreadyExistsException("Cannot create user. Username is already used");
+                })
+                .onErrorResumeNext(throwable -> {
+                    if (NotFoundException.class.isAssignableFrom(throwable.getClass())) {
+                        return userRepository.insert(user);
+                    }
+                    return Single.error(throwable);
+                });
     }
 
-    public User getUserFromCredentials(String username, String password) throws NotFoundException {
-        return userDao
-                .configuration()
-                .dsl()
-                .selectFrom(userDao.getTable())
-                .where(field(com.mick.vuetinaut.jooq.model.tables.User.USER.USERNAME)
-                        .eq(username))
-                .and(field(com.mick.vuetinaut.jooq.model.tables.User.USER.PASSWORD)
-                        .eq(passwordService.getPasswordHash(password)))
-                .fetchOptionalInto(User.class)
-                .orElseThrow(() -> new NotFoundException("No user for that username/password"));
+    public Single<User> getUserFromUuid(UUID userUuid) {
+        return userRepository.fetchByUuid(userUuid);
     }
 
-    public User getUser(UUID uuid) throws NotFoundException {
-        User user = userDao
-                .fetchOneByUuid(uuid);
-
-        if (user == null) {
-            throw new NotFoundException("No user for that uuid");
-        }
-
-        return user;
-    }
-
-    public List<User> getAllUsers() {
-        return userDao.findAll();
-    }
-
-    public User updateUser(User user) {
-        userDao.update(user);
-        return user;
-    }
-
-    public void deleteUser(User user) {
-        userDao.delete(user);
+    public Single<User> getUserFromCredentials(String username, String password) throws NotFoundException {
+        return userRepository.fetchFromCredentials(username, passwordService.getPasswordHash(password));
     }
 }

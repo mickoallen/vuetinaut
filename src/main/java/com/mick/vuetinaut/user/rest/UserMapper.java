@@ -1,4 +1,4 @@
-package com.mick.vuetinaut.user;
+package com.mick.vuetinaut.user.rest;
 
 import com.mick.vuetinaut.jooq.model.tables.pojos.User;
 
