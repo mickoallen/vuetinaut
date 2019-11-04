@@ -3,6 +3,7 @@ package com.mick.vuetinaut.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import org.jooq.Configuration;
@@ -16,10 +17,11 @@ import java.net.URISyntaxException;
 @Factory
 public class DatabaseFactory {
 
-    @Context //lets connect on startup
+    @Context //force connect on startup
     @Bean
     @Singleton
     public Configuration provideJooqConfiguration(DatabaseConfig databaseConfig) throws URISyntaxException {
+        System.getProperties().setProperty("org.jooq.no-logo", "true");
         URI dbUri = new URI(databaseConfig.getUrl());
 
         String username = dbUri.getUserInfo().split(":")[0];

@@ -4,10 +4,10 @@
 package com.mick.vuetinaut.jooq.model;
 
 
-import com.mick.vuetinaut.jooq.model.tables.Conversation;
-import com.mick.vuetinaut.jooq.model.tables.Message;
+import com.mick.vuetinaut.jooq.model.tables.Note;
+import com.mick.vuetinaut.jooq.model.tables.Notepad;
+import com.mick.vuetinaut.jooq.model.tables.NotepadUserShare;
 import com.mick.vuetinaut.jooq.model.tables.User;
-import com.mick.vuetinaut.jooq.model.tables.UserConversation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = 684696064;
+    private static final long serialVersionUID = -189159062;
 
     /**
      * The reference instance of <code>public</code>
@@ -41,24 +41,24 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.conversation</code>.
+     * The table <code>public.note</code>.
      */
-    public final Conversation CONVERSATION = com.mick.vuetinaut.jooq.model.tables.Conversation.CONVERSATION;
+    public final Note NOTE = com.mick.vuetinaut.jooq.model.tables.Note.NOTE;
 
     /**
-     * The table <code>public.message</code>.
+     * The table <code>public.notepad</code>.
      */
-    public final Message MESSAGE = com.mick.vuetinaut.jooq.model.tables.Message.MESSAGE;
+    public final Notepad NOTEPAD = com.mick.vuetinaut.jooq.model.tables.Notepad.NOTEPAD;
+
+    /**
+     * The table <code>public.notepad_user_share</code>.
+     */
+    public final NotepadUserShare NOTEPAD_USER_SHARE = com.mick.vuetinaut.jooq.model.tables.NotepadUserShare.NOTEPAD_USER_SHARE;
 
     /**
      * The table <code>public.user</code>.
      */
     public final User USER = com.mick.vuetinaut.jooq.model.tables.User.USER;
-
-    /**
-     * The table <code>public.user_conversation</code>.
-     */
-    public final UserConversation USER_CONVERSATION = com.mick.vuetinaut.jooq.model.tables.UserConversation.USER_CONVERSATION;
 
     /**
      * No further instances allowed
@@ -85,9 +85,9 @@ public class Public extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            Conversation.CONVERSATION,
-            Message.MESSAGE,
-            User.USER,
-            UserConversation.USER_CONVERSATION);
+            Note.NOTE,
+            Notepad.NOTEPAD,
+            NotepadUserShare.NOTEPAD_USER_SHARE,
+            User.USER);
     }
 }

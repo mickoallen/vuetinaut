@@ -3,6 +3,8 @@ micronaut:
     name: vuetinaut
   server:
     port: ${PORT:8081}
+    cors:
+      enabled: ${ENABLE_CORS:true}
   router:
     static-resources:
       swagger:
@@ -13,18 +15,22 @@ micronaut:
     endpoints:
       login:
         enabled: true
-      oauth:
-        enabled: true
     token:
       jwt:
         enabled: true
+        bearer:
+          enabled: false
+        cookie:
+          enabled: true
+          loginFailureTargetUrl: http://localhost:8080/#/login
+          loginSuccessTargetUrl: http://localhost:8080/#/home
         signatures:
           secret:
             generator:
-              secret: yourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmom
+              secret: yourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmom
 
 db:
   url: ${DATABASE_URL:`postgresql://postgres:postgres@localhost:5432/postgres`}
-  min_pool: 2
-  max_pool: 5
-  connection_timeout: 20000
+  min-pool: 2
+  max-pool: 5
+  connection-timeout: 20000

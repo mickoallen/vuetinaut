@@ -24,12 +24,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -1131998446;
+    private static final long serialVersionUID = -1716781450;
 
     private UUID      uuid;
     private String    username;
     private String    password;
-    private String    avatarUrl;
     private Timestamp dateCreated;
 
     public User() {}
@@ -38,7 +37,6 @@ public class User implements Serializable {
         this.uuid = value.uuid;
         this.username = value.username;
         this.password = value.password;
-        this.avatarUrl = value.avatarUrl;
         this.dateCreated = value.dateCreated;
     }
 
@@ -46,13 +44,11 @@ public class User implements Serializable {
         UUID      uuid,
         String    username,
         String    password,
-        String    avatarUrl,
         Timestamp dateCreated
     ) {
         this.uuid = uuid;
         this.username = username;
         this.password = password;
-        this.avatarUrl = avatarUrl;
         this.dateCreated = dateCreated;
     }
 
@@ -78,14 +74,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getAvatarUrl() {
-        return this.avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
     }
 
     public Timestamp getDateCreated() {
@@ -123,12 +111,6 @@ public class User implements Serializable {
         }
         else if (!password.equals(other.password))
             return false;
-        if (avatarUrl == null) {
-            if (other.avatarUrl != null)
-                return false;
-        }
-        else if (!avatarUrl.equals(other.avatarUrl))
-            return false;
         if (dateCreated == null) {
             if (other.dateCreated != null)
                 return false;
@@ -145,19 +127,17 @@ public class User implements Serializable {
         result = prime * result + ((this.uuid == null) ? 0 : this.uuid.hashCode());
         result = prime * result + ((this.username == null) ? 0 : this.username.hashCode());
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
-        result = prime * result + ((this.avatarUrl == null) ? 0 : this.avatarUrl.hashCode());
         result = prime * result + ((this.dateCreated == null) ? 0 : this.dateCreated.hashCode());
         return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("UserDTO (");
+        StringBuilder sb = new StringBuilder("User (");
 
         sb.append(uuid);
         sb.append(", ").append(username);
         sb.append(", ").append(password);
-        sb.append(", ").append(avatarUrl);
         sb.append(", ").append(dateCreated);
 
         sb.append(")");

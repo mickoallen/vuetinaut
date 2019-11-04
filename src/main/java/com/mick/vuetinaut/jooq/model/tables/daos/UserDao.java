@@ -81,13 +81,6 @@ public class UserDao extends DAOImpl<UserRecord, com.mick.vuetinaut.jooq.model.t
     }
 
     /**
-     * Fetch records that have <code>avatar_url IN (values)</code>
-     */
-    public List<com.mick.vuetinaut.jooq.model.tables.pojos.User> fetchByAvatarUrl(String... values) {
-        return fetch(User.USER.AVATAR_URL, values);
-    }
-
-    /**
      * Fetch records that have <code>date_created IN (values)</code>
      */
     public List<com.mick.vuetinaut.jooq.model.tables.pojos.User> fetchByDateCreated(Timestamp... values) {

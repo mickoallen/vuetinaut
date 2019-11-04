@@ -1,14 +1,23 @@
 package com.mick.vuetinaut.db;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Property;
 
 @ConfigurationProperties("db")
 public class DatabaseConfig {
 
+    @Property(name = "url")
     private String url;
+    @Property(name = "min-pool")
     private int minPool;
+    @Property(name = "max-pool")
     private int maxPool;
+    @Property(name = "connection-timeout")
     private int connectionTimeout;
+
+
+    public DatabaseConfig() {
+    }
 
     public String getUrl() {
         return url;

@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = 177459050;
+    private static final long serialVersionUID = -1953107735;
 
     /**
      * The reference instance of <code>public.user</code>
@@ -71,11 +71,6 @@ public class User extends TableImpl<UserRecord> {
      * The column <code>public.user.password</code>.
      */
     public final TableField<UserRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>public.user.avatar_url</code>.
-     */
-    public final TableField<UserRecord, String> AVATAR_URL = createField("avatar_url", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>public.user.date_created</code>.

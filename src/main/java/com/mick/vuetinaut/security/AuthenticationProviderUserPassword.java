@@ -44,6 +44,6 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
                 authenticationRequest.getIdentity(),
                 authenticationRequest.getSecret()
         ).toFlowable()
-                .map(user -> new UserDetails(user.getUsername(), List.of()));
+                .map(user -> new UserDetails(user.getUuid().toString(), List.of()));
     }
 }

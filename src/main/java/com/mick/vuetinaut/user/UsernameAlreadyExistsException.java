@@ -1,8 +1,8 @@
 package com.mick.vuetinaut.user;
 
-import com.mick.vuetinaut.exceptions.VuetinautException;
+import com.mick.vuetinaut.exceptions.BadRequestException;
 
-public class UsernameAlreadyExistsException extends VuetinautException {
+public class UsernameAlreadyExistsException extends BadRequestException {
     public UsernameAlreadyExistsException() {
     }
 

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Singleton
@@ -28,10 +29,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Single<User> createUser(User user) throws UsernameAlreadyExistsException {
+    public Single<User> createUser(User user, String password) throws UsernameAlreadyExistsException {
 
         user.setUuid(UUID.randomUUID());
-        user.setPassword(passwordService.getPasswordHash(user.getPassword()));
+        user.setPassword(passwordService.getPasswordHash(password));
         user.setDateCreated(Timestamp.from(Instant.now()));
 
         return userRepository.fetchByUsername(user.getUsername())
@@ -53,5 +54,9 @@ public class UserService {
 
     public Single<User> getUserFromCredentials(String username, String password) throws NotFoundException {
         return userRepository.fetchFromCredentials(username, passwordService.getPasswordHash(password));
+    }
+
+    public Single<List<User>> searchByUsername(String username) {
+        return userRepository.searchByUsername(username);
     }
 }

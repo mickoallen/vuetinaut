@@ -4,10 +4,10 @@
 package com.mick.vuetinaut.jooq.model;
 
 
-import com.mick.vuetinaut.jooq.model.tables.Conversation;
-import com.mick.vuetinaut.jooq.model.tables.Message;
+import com.mick.vuetinaut.jooq.model.tables.Note;
+import com.mick.vuetinaut.jooq.model.tables.Notepad;
+import com.mick.vuetinaut.jooq.model.tables.NotepadUserShare;
 import com.mick.vuetinaut.jooq.model.tables.User;
-import com.mick.vuetinaut.jooq.model.tables.UserConversation;
 
 import javax.annotation.Generated;
 
@@ -33,19 +33,19 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index CONVERSATION_PKEY = Indexes0.CONVERSATION_PKEY;
-    public static final Index MESSAGE_PKEY = Indexes0.MESSAGE_PKEY;
+    public static final Index NOTE_PKEY = Indexes0.NOTE_PKEY;
+    public static final Index NOTEPAD_PKEY = Indexes0.NOTEPAD_PKEY;
+    public static final Index NOTEPAD_USER_SHARE_PKEY = Indexes0.NOTEPAD_USER_SHARE_PKEY;
     public static final Index USER_PKEY = Indexes0.USER_PKEY;
-    public static final Index USER_CONVERSATION_PKEY = Indexes0.USER_CONVERSATION_PKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
     private static class Indexes0 {
-        public static Index CONVERSATION_PKEY = Internal.createIndex("conversation_pkey", Conversation.CONVERSATION, new OrderField[] { Conversation.CONVERSATION.UUID }, true);
-        public static Index MESSAGE_PKEY = Internal.createIndex("message_pkey", Message.MESSAGE, new OrderField[] { Message.MESSAGE.UUID }, true);
+        public static Index NOTE_PKEY = Internal.createIndex("note_pkey", Note.NOTE, new OrderField[] { Note.NOTE.UUID }, true);
+        public static Index NOTEPAD_PKEY = Internal.createIndex("notepad_pkey", Notepad.NOTEPAD, new OrderField[] { Notepad.NOTEPAD.UUID }, true);
+        public static Index NOTEPAD_USER_SHARE_PKEY = Internal.createIndex("notepad_user_share_pkey", NotepadUserShare.NOTEPAD_USER_SHARE, new OrderField[] { NotepadUserShare.NOTEPAD_USER_SHARE.UUID }, true);
         public static Index USER_PKEY = Internal.createIndex("user_pkey", User.USER, new OrderField[] { User.USER.UUID }, true);
-        public static Index USER_CONVERSATION_PKEY = Internal.createIndex("user_conversation_pkey", UserConversation.USER_CONVERSATION, new OrderField[] { UserConversation.USER_CONVERSATION.UUID }, true);
     }
 }

@@ -4,10 +4,10 @@
 package com.mick.vuetinaut.jooq.model;
 
 
-import com.mick.vuetinaut.jooq.model.tables.Conversation;
-import com.mick.vuetinaut.jooq.model.tables.Message;
+import com.mick.vuetinaut.jooq.model.tables.Note;
+import com.mick.vuetinaut.jooq.model.tables.Notepad;
+import com.mick.vuetinaut.jooq.model.tables.NotepadUserShare;
 import com.mick.vuetinaut.jooq.model.tables.User;
-import com.mick.vuetinaut.jooq.model.tables.UserConversation;
 
 import javax.annotation.Generated;
 
@@ -26,22 +26,22 @@ import javax.annotation.Generated;
 public class Tables {
 
     /**
-     * The table <code>public.conversation</code>.
+     * The table <code>public.note</code>.
      */
-    public static final Conversation CONVERSATION = com.mick.vuetinaut.jooq.model.tables.Conversation.CONVERSATION;
+    public static final Note NOTE = com.mick.vuetinaut.jooq.model.tables.Note.NOTE;
 
     /**
-     * The table <code>public.message</code>.
+     * The table <code>public.notepad</code>.
      */
-    public static final Message MESSAGE = com.mick.vuetinaut.jooq.model.tables.Message.MESSAGE;
+    public static final Notepad NOTEPAD = com.mick.vuetinaut.jooq.model.tables.Notepad.NOTEPAD;
+
+    /**
+     * The table <code>public.notepad_user_share</code>.
+     */
+    public static final NotepadUserShare NOTEPAD_USER_SHARE = com.mick.vuetinaut.jooq.model.tables.NotepadUserShare.NOTEPAD_USER_SHARE;
 
     /**
      * The table <code>public.user</code>.
      */
     public static final User USER = com.mick.vuetinaut.jooq.model.tables.User.USER;
-
-    /**
-     * The table <code>public.user_conversation</code>.
-     */
-    public static final UserConversation USER_CONVERSATION = com.mick.vuetinaut.jooq.model.tables.UserConversation.USER_CONVERSATION;
 }
