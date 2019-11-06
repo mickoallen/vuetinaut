@@ -4,7 +4,6 @@
 package com.mick.vuetinaut.jooq.model;
 
 
-import com.mick.vuetinaut.jooq.model.tables.Note;
 import com.mick.vuetinaut.jooq.model.tables.Notepad;
 import com.mick.vuetinaut.jooq.model.tables.NotepadUserShare;
 import com.mick.vuetinaut.jooq.model.tables.User;
@@ -33,17 +32,12 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -189159062;
+    private static final long serialVersionUID = 1976284834;
 
     /**
      * The reference instance of <code>public</code>
      */
     public static final Public PUBLIC = new Public();
-
-    /**
-     * The table <code>public.note</code>.
-     */
-    public final Note NOTE = com.mick.vuetinaut.jooq.model.tables.Note.NOTE;
 
     /**
      * The table <code>public.notepad</code>.
@@ -85,7 +79,6 @@ public class Public extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            Note.NOTE,
             Notepad.NOTEPAD,
             NotepadUserShare.NOTEPAD_USER_SHARE,
             User.USER);

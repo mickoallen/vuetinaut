@@ -30,7 +30,7 @@ public class LoginService {
         client.toBlocking().exchange(HttpRequest.PUT(UserController.USERS_ROUTE, userPasswordDto), UserDto.class);
 
         HttpResponse<LoginResponseDto> loginResponse = client.toBlocking()
-                .exchange(HttpRequest.POST("/login", new LoginDto().setUsername(username).setPassword("password")), LoginResponseDto.class);
+                .exchange(HttpRequest.POST("/api/login", new LoginDto().setUsername(username).setPassword("password")), LoginResponseDto.class);
 
         return loginResponse.getBody().get();
     }

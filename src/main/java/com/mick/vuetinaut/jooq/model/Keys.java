@@ -4,11 +4,9 @@
 package com.mick.vuetinaut.jooq.model;
 
 
-import com.mick.vuetinaut.jooq.model.tables.Note;
 import com.mick.vuetinaut.jooq.model.tables.Notepad;
 import com.mick.vuetinaut.jooq.model.tables.NotepadUserShare;
 import com.mick.vuetinaut.jooq.model.tables.User;
-import com.mick.vuetinaut.jooq.model.tables.records.NoteRecord;
 import com.mick.vuetinaut.jooq.model.tables.records.NotepadRecord;
 import com.mick.vuetinaut.jooq.model.tables.records.NotepadUserShareRecord;
 import com.mick.vuetinaut.jooq.model.tables.records.UserRecord;
@@ -42,7 +40,6 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<NoteRecord> NOTE_PKEY = UniqueKeys0.NOTE_PKEY;
     public static final UniqueKey<NotepadRecord> NOTEPAD_PKEY = UniqueKeys0.NOTEPAD_PKEY;
     public static final UniqueKey<NotepadUserShareRecord> NOTEPAD_USER_SHARE_PKEY = UniqueKeys0.NOTEPAD_USER_SHARE_PKEY;
     public static final UniqueKey<UserRecord> USER_PKEY = UniqueKeys0.USER_PKEY;
@@ -57,7 +54,6 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class UniqueKeys0 {
-        public static final UniqueKey<NoteRecord> NOTE_PKEY = Internal.createUniqueKey(Note.NOTE, "note_pkey", Note.NOTE.UUID);
         public static final UniqueKey<NotepadRecord> NOTEPAD_PKEY = Internal.createUniqueKey(Notepad.NOTEPAD, "notepad_pkey", Notepad.NOTEPAD.UUID);
         public static final UniqueKey<NotepadUserShareRecord> NOTEPAD_USER_SHARE_PKEY = Internal.createUniqueKey(NotepadUserShare.NOTEPAD_USER_SHARE, "notepad_user_share_pkey", NotepadUserShare.NOTEPAD_USER_SHARE.UUID);
         public static final UniqueKey<UserRecord> USER_PKEY = Internal.createUniqueKey(User.USER, "user_pkey", User.USER.UUID);

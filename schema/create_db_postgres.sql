@@ -20,6 +20,9 @@ CREATE TABLE public."notepad"
 (
 	uuid uuid NOT NULL,
     name varchar(255) COLLATE pg_catalog."default" NOT NULL,
+    body text,
+    editor_user_uuid uuid,
+    date_edited timestamp,
     creator_user_uuid uuid NOT NULL,
     date_created timestamp NOT NULL,
     CONSTRAINT notepad_pkey PRIMARY KEY (uuid)
@@ -30,26 +33,6 @@ WITH (
 TABLESPACE pg_default;
 
 ALTER TABLE public."notepad"
-    OWNER to postgres;
-
--------------------- note --------------------
-CREATE TABLE public."note"
-(
-	uuid uuid NOT NULL,
-    notepad_uuid uuid NOT NULL,
-    body text NOT NULL,
-    creator_user_uuid uuid NOT NULL,
-    editor_user_uuid uuid NOT NULL,
-    date_edited timestamp NOT NULL,
-    date_created timestamp NOT NULL,
-    CONSTRAINT note_pkey PRIMARY KEY (uuid)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-ALTER TABLE public."note"
     OWNER to postgres;
 
 -------------------- notepad_user_share --------------------

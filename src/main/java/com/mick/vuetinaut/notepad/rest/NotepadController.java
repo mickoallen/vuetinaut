@@ -1,6 +1,5 @@
 package com.mick.vuetinaut.notepad.rest;
 
-import com.mick.vuetinaut.exceptions.BadRequestException;
 import com.mick.vuetinaut.exceptions.ErrorHandler;
 import com.mick.vuetinaut.notepad.NotepadService;
 import com.mick.vuetinaut.security.PrincipalUtils;
@@ -22,10 +21,9 @@ import java.util.UUID;
 @Validated
 @Controller(NotepadController.NOTEPADS_ROUTE)
 public class NotepadController {
-    public static final String NOTEPADS_ROUTE = "/notepads";
+    public static final String NOTEPADS_ROUTE = "/api/notepads";
 
     private static final String NOTEPAD_UUID_PATH_VARIABLE = "notepadUuid";
-    private static final String NOTE_UUID_PATH_VARIABLE = "noteUuid";
     private final NotepadService notepadService;
 
     @Inject
@@ -120,57 +118,6 @@ public class NotepadController {
         return notepadService
                 .deleteNotepad(notepadUuid, PrincipalUtils.getUserUuid(principal))
                 .andThen(Single.just(HttpResponse.ok("OK")))
-                .onErrorResumeNext(ErrorHandler::handleError);
-    }
-
-    @Put(
-            value = "/{" + NOTEPAD_UUID_PATH_VARIABLE + "}/notes",
-            consumes = MediaType.APPLICATION_JSON,
-            produces = MediaType.APPLICATION_JSON
-    )
-    @Secured(SecurityRule.IS_AUTHENTICATED)
-    public Single<MutableHttpResponse<NoteDto>> createNote(
-            @PathVariable(NOTEPAD_UUID_PATH_VARIABLE) UUID notepadUuid, @Body @Valid NoteDto noteDto, Principal principal) {
-        if (!noteDto.getNotepadUuid().equals(notepadUuid)) {
-            throw new BadRequestException("Id in path does not match id in body");
-        }
-
-        return notepadService
-                .createNote(NoteMapper.toEntity(noteDto), PrincipalUtils.getUserUuid(principal))
-                .map(NoteMapper::toDto)
-                .map(HttpResponse::created)
-                .onErrorResumeNext(ErrorHandler::handleError);
-    }
-
-    @Post(
-            value = "/{" + NOTEPAD_UUID_PATH_VARIABLE + "}/notes/{" + NOTE_UUID_PATH_VARIABLE + "}",
-            consumes = MediaType.APPLICATION_JSON,
-            produces = MediaType.APPLICATION_JSON
-    )
-    @Secured(SecurityRule.IS_AUTHENTICATED)
-    public Single<MutableHttpResponse<NoteDto>> editNote(
-            @PathVariable(NOTEPAD_UUID_PATH_VARIABLE) UUID notepadUuid, @PathVariable UUID noteUuid, @Body @Valid NoteDto noteDto, Principal principal) {
-        if (!noteDto.getNotepadUuid().equals(notepadUuid) || !noteDto.getUuid().equals(noteUuid)) {
-            throw new BadRequestException("Request is not valid");
-        }
-
-        return notepadService
-                .editNote(NoteMapper.toEntity(noteDto), PrincipalUtils.getUserUuid(principal))
-                .map(NoteMapper::toDto)
-                .map(HttpResponse::ok)
-                .onErrorResumeNext(ErrorHandler::handleError);
-    }
-
-    @Delete(
-            value = "/{" + NOTEPAD_UUID_PATH_VARIABLE + "}/notes/{" + NOTE_UUID_PATH_VARIABLE + "}",
-            produces = MediaType.APPLICATION_JSON
-    )
-    @Secured(SecurityRule.IS_AUTHENTICATED)
-    public Single<MutableHttpResponse<Object>> deleteNote(
-            @PathVariable(NOTEPAD_UUID_PATH_VARIABLE) UUID notepadUuid, @PathVariable UUID noteUuid, Principal principal) {
-        return notepadService
-                .deleteNote(notepadUuid, PrincipalUtils.getUserUuid(principal))
-                .andThen(Single.just(HttpResponse.ok()))
                 .onErrorResumeNext(ErrorHandler::handleError);
     }
 }

@@ -2,7 +2,6 @@ package com.mick.vuetinaut.notepad.rest;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -13,9 +12,11 @@ public class NotepadDto {
     @NotEmpty
     private String name;
     private UUID userUuid;
-    private List<NoteDto> notes = new ArrayList<>();
+    private String body;
     private long lastUpdatedTimestamp;
     private UUID lastUpdatedUser;
+    private long createdTimestamp;
+    private UUID owner;
 
     public UUID getUuid() {
         return uuid;
@@ -23,15 +24,6 @@ public class NotepadDto {
 
     public NotepadDto setUuid(UUID uuid) {
         this.uuid = uuid;
-        return this;
-    }
-
-    public UUID getUserUuid() {
-        return userUuid;
-    }
-
-    public NotepadDto setUserUuid(UUID userUuid) {
-        this.userUuid = userUuid;
         return this;
     }
 
@@ -44,12 +36,21 @@ public class NotepadDto {
         return this;
     }
 
-    public List<NoteDto> getNotes() {
-        return notes;
+    public UUID getUserUuid() {
+        return userUuid;
     }
 
-    public NotepadDto setNotes(List<NoteDto> notes) {
-        this.notes = notes;
+    public NotepadDto setUserUuid(UUID userUuid) {
+        this.userUuid = userUuid;
+        return this;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public NotepadDto setBody(String body) {
+        this.body = body;
         return this;
     }
 
@@ -71,16 +72,22 @@ public class NotepadDto {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "NotepadDto{" +
-                "uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", userUuid=" + userUuid +
-                ", notes=" + notes +
-                ", lastUpdatedTimestamp=" + lastUpdatedTimestamp +
-                ", lastUpdatedUser=" + lastUpdatedUser +
-                '}';
+    public long getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public NotepadDto setCreatedTimestamp(long createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
+        return this;
+    }
+
+    public UUID getOwner() {
+        return owner;
+    }
+
+    public NotepadDto setOwner(UUID owner) {
+        this.owner = owner;
+        return this;
     }
 
     @Override
@@ -89,15 +96,31 @@ public class NotepadDto {
         if (o == null || getClass() != o.getClass()) return false;
         NotepadDto that = (NotepadDto) o;
         return lastUpdatedTimestamp == that.lastUpdatedTimestamp &&
+                createdTimestamp == that.createdTimestamp &&
                 Objects.equals(uuid, that.uuid) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(userUuid, that.userUuid) &&
-                Objects.equals(notes, that.notes) &&
-                Objects.equals(lastUpdatedUser, that.lastUpdatedUser);
+                Objects.equals(body, that.body) &&
+                Objects.equals(lastUpdatedUser, that.lastUpdatedUser) &&
+                Objects.equals(owner, that.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, name, userUuid, notes, lastUpdatedTimestamp, lastUpdatedUser);
+        return Objects.hash(uuid, name, userUuid, body, lastUpdatedTimestamp, lastUpdatedUser, createdTimestamp, owner);
+    }
+
+    @Override
+    public String toString() {
+        return "NotepadDto{" +
+                "uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", userUuid=" + userUuid +
+                ", body='" + body + '\'' +
+                ", lastUpdatedTimestamp=" + lastUpdatedTimestamp +
+                ", lastUpdatedUser=" + lastUpdatedUser +
+                ", createdTimestamp=" + createdTimestamp +
+                ", owner=" + owner +
+                '}';
     }
 }

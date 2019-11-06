@@ -4,7 +4,6 @@
 package com.mick.vuetinaut.jooq.model;
 
 
-import com.mick.vuetinaut.jooq.model.tables.Note;
 import com.mick.vuetinaut.jooq.model.tables.Notepad;
 import com.mick.vuetinaut.jooq.model.tables.NotepadUserShare;
 import com.mick.vuetinaut.jooq.model.tables.User;
@@ -24,11 +23,6 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
-
-    /**
-     * The table <code>public.note</code>.
-     */
-    public static final Note NOTE = com.mick.vuetinaut.jooq.model.tables.Note.NOTE;
 
     /**
      * The table <code>public.notepad</code>.

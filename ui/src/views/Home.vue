@@ -1,8 +1,8 @@
 <template>
     <v-app>
         <v-content>
-            <v-card>
-                <v-card-text>{{notepads}}</v-card-text>
+            <v-card>                
+                <NotepadList />
             </v-card>
         </v-content>
         <v-snackbar :color="getSnackColor" v-model="showSnack">{{ snackMessage }}</v-snackbar>
@@ -10,10 +10,11 @@
 </template>
 
 <script>
-import axios from "axios";
-import { SERVER_URL } from "../config.js";
+import NotepadList from "../components/NotepadList"
 
 export default {
+    components: {NotepadList},
+
     data() {
         return {
             notepads: [],
@@ -22,30 +23,14 @@ export default {
             snackMessage: ""
         };
     },
+
     computed: {
         getSnackColor() {
             return this.snackError ? "error" : "success";
         }
     },
-    components: {},
 
     beforeMount() {
-        axios
-            .get(SERVER_URL + "/notepads")
-            .then(response => {
-                this.notepads = response;
-            })
-            .catch(error => {
-                this.showSnack = true;
-                this.snackError = true;
-                this.snackMessage = "Error logging in";
-
-                if (error.response.status === 400) {
-                    this.snackMessage = "Username/password invalid";
-                } else {
-                    this.snackMessage = error;
-                }
-            });
     },
 
     methods() {}

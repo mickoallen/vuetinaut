@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Notepad extends TableImpl<NotepadRecord> {
 
-    private static final long serialVersionUID = 1383519884;
+    private static final long serialVersionUID = -1753309842;
 
     /**
      * The reference instance of <code>public.notepad</code>
@@ -66,6 +66,21 @@ public class Notepad extends TableImpl<NotepadRecord> {
      * The column <code>public.notepad.name</code>.
      */
     public final TableField<NotepadRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
+     * The column <code>public.notepad.body</code>.
+     */
+    public final TableField<NotepadRecord, String> BODY = createField("body", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+
+    /**
+     * The column <code>public.notepad.editor_user_uuid</code>.
+     */
+    public final TableField<NotepadRecord, UUID> EDITOR_USER_UUID = createField("editor_user_uuid", org.jooq.impl.SQLDataType.UUID.nullable(false), this, "");
+
+    /**
+     * The column <code>public.notepad.date_edited</code>.
+     */
+    public final TableField<NotepadRecord, Timestamp> DATE_EDITED = createField("date_edited", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
 
     /**
      * The column <code>public.notepad.creator_user_uuid</code>.

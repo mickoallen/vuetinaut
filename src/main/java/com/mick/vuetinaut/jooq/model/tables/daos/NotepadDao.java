@@ -74,6 +74,27 @@ public class NotepadDao extends DAOImpl<NotepadRecord, com.mick.vuetinaut.jooq.m
     }
 
     /**
+     * Fetch records that have <code>body IN (values)</code>
+     */
+    public List<com.mick.vuetinaut.jooq.model.tables.pojos.Notepad> fetchByBody(String... values) {
+        return fetch(Notepad.NOTEPAD.BODY, values);
+    }
+
+    /**
+     * Fetch records that have <code>editor_user_uuid IN (values)</code>
+     */
+    public List<com.mick.vuetinaut.jooq.model.tables.pojos.Notepad> fetchByEditorUserUuid(UUID... values) {
+        return fetch(Notepad.NOTEPAD.EDITOR_USER_UUID, values);
+    }
+
+    /**
+     * Fetch records that have <code>date_edited IN (values)</code>
+     */
+    public List<com.mick.vuetinaut.jooq.model.tables.pojos.Notepad> fetchByDateEdited(Timestamp... values) {
+        return fetch(Notepad.NOTEPAD.DATE_EDITED, values);
+    }
+
+    /**
      * Fetch records that have <code>creator_user_uuid IN (values)</code>
      */
     public List<com.mick.vuetinaut.jooq.model.tables.pojos.Notepad> fetchByCreatorUserUuid(UUID... values) {

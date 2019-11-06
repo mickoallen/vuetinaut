@@ -3,18 +3,30 @@ micronaut:
     name: vuetinaut
   server:
     port: ${PORT:8081}
-    cors:
-      enabled: ${ENABLE_CORS:true}
   router:
     static-resources:
       swagger:
         paths: classpath:META-INF/swagger
         mapping: /api-docs/**
+      default:
+        enabled: true
+        mapping: "/**"
+        paths: "file:/home/mick/MickProjects/vuetinaut/ui/dist"
   security:
     enabled: true
+
+    intercept-url-map:
+      - pattern: /**
+        access:
+          - isAnonymous()
+      - pattern: /api/**
+        access:
+          - isAuthenticated()
     endpoints:
       login:
         enabled: true
+        path: /api/login
+
     token:
       jwt:
         enabled: true
@@ -22,8 +34,8 @@ micronaut:
           enabled: false
         cookie:
           enabled: true
-          loginFailureTargetUrl: http://localhost:8080/#/login
-          loginSuccessTargetUrl: http://localhost:8080/#/home
+          loginFailureTargetUrl: /#/login
+          loginSuccessTargetUrl: /#/
         signatures:
           secret:
             generator:

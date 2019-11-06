@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Controller(UserController.USERS_ROUTE)
 public class UserController {
-    public static final String USERS_ROUTE = "/users";
+    public static final String USERS_ROUTE = "/api/users";
 
     private final UserService userService;
 

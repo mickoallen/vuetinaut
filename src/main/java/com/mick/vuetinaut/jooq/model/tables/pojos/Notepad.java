@@ -24,10 +24,13 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Notepad implements Serializable {
 
-    private static final long serialVersionUID = 467962206;
+    private static final long serialVersionUID = -1265467378;
 
     private UUID      uuid;
     private String    name;
+    private String    body;
+    private UUID      editorUserUuid;
+    private Timestamp dateEdited;
     private UUID      creatorUserUuid;
     private Timestamp dateCreated;
 
@@ -36,6 +39,9 @@ public class Notepad implements Serializable {
     public Notepad(Notepad value) {
         this.uuid = value.uuid;
         this.name = value.name;
+        this.body = value.body;
+        this.editorUserUuid = value.editorUserUuid;
+        this.dateEdited = value.dateEdited;
         this.creatorUserUuid = value.creatorUserUuid;
         this.dateCreated = value.dateCreated;
     }
@@ -43,11 +49,17 @@ public class Notepad implements Serializable {
     public Notepad(
         UUID      uuid,
         String    name,
+        String    body,
+        UUID      editorUserUuid,
+        Timestamp dateEdited,
         UUID      creatorUserUuid,
         Timestamp dateCreated
     ) {
         this.uuid = uuid;
         this.name = name;
+        this.body = body;
+        this.editorUserUuid = editorUserUuid;
+        this.dateEdited = dateEdited;
         this.creatorUserUuid = creatorUserUuid;
         this.dateCreated = dateCreated;
     }
@@ -66,6 +78,30 @@ public class Notepad implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBody() {
+        return this.body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public UUID getEditorUserUuid() {
+        return this.editorUserUuid;
+    }
+
+    public void setEditorUserUuid(UUID editorUserUuid) {
+        this.editorUserUuid = editorUserUuid;
+    }
+
+    public Timestamp getDateEdited() {
+        return this.dateEdited;
+    }
+
+    public void setDateEdited(Timestamp dateEdited) {
+        this.dateEdited = dateEdited;
     }
 
     public UUID getCreatorUserUuid() {
@@ -105,6 +141,24 @@ public class Notepad implements Serializable {
         }
         else if (!name.equals(other.name))
             return false;
+        if (body == null) {
+            if (other.body != null)
+                return false;
+        }
+        else if (!body.equals(other.body))
+            return false;
+        if (editorUserUuid == null) {
+            if (other.editorUserUuid != null)
+                return false;
+        }
+        else if (!editorUserUuid.equals(other.editorUserUuid))
+            return false;
+        if (dateEdited == null) {
+            if (other.dateEdited != null)
+                return false;
+        }
+        else if (!dateEdited.equals(other.dateEdited))
+            return false;
         if (creatorUserUuid == null) {
             if (other.creatorUserUuid != null)
                 return false;
@@ -126,6 +180,9 @@ public class Notepad implements Serializable {
         int result = 1;
         result = prime * result + ((this.uuid == null) ? 0 : this.uuid.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result + ((this.body == null) ? 0 : this.body.hashCode());
+        result = prime * result + ((this.editorUserUuid == null) ? 0 : this.editorUserUuid.hashCode());
+        result = prime * result + ((this.dateEdited == null) ? 0 : this.dateEdited.hashCode());
         result = prime * result + ((this.creatorUserUuid == null) ? 0 : this.creatorUserUuid.hashCode());
         result = prime * result + ((this.dateCreated == null) ? 0 : this.dateCreated.hashCode());
         return result;
@@ -137,6 +194,9 @@ public class Notepad implements Serializable {
 
         sb.append(uuid);
         sb.append(", ").append(name);
+        sb.append(", ").append(body);
+        sb.append(", ").append(editorUserUuid);
+        sb.append(", ").append(dateEdited);
         sb.append(", ").append(creatorUserUuid);
         sb.append(", ").append(dateCreated);
 
