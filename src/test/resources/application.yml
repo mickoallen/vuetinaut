@@ -1,0 +1,29 @@
+micronaut:
+  application:
+    name: vuetinaut test
+  server:
+    port: ${PORT:8081}
+  security:
+    enabled: true
+
+    intercept-url-map:
+      - pattern: /**
+        access:
+          - isAnonymous()
+      - pattern: /api/**
+        access:
+          - isAuthenticated()
+    endpoints:
+      login:
+        enabled: true
+        path: /api/login
+
+    token:
+      jwt:
+        enabled: true
+        bearer:
+          enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: yourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmom

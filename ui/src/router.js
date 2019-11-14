@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Notes from './views/Notes.vue'
 import Login from './views/Login.vue'
 import CreateAccount from './views/CreateAccount.vue'
 import ForgotPassword from './views/ForgotPassword.vue'
@@ -11,8 +11,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      redirect: 'notes'
+    },
+    {
+      path: '/notes*',
+      name: 'notes',
+      component: Notes
     },
     {
       path: '/about',

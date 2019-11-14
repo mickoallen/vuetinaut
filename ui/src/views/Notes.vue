@@ -1,19 +1,15 @@
 <template>
-    <v-app>
-        <v-content>
-            <v-card>                
-                <NotepadList />
-            </v-card>
-        </v-content>
+    <div>
+        <NotepadList />
         <v-snackbar :color="getSnackColor" v-model="showSnack">{{ snackMessage }}</v-snackbar>
-    </v-app>
+    </div>
 </template>
 
 <script>
-import NotepadList from "../components/NotepadList"
+import NotepadList from "../components/NotepadList";
 
 export default {
-    components: {NotepadList},
+    components: { NotepadList },
 
     data() {
         return {
@@ -30,9 +26,7 @@ export default {
         }
     },
 
-    beforeMount() {
-    },
+    beforeMount() {}
 
-    methods() {}
 };
 </script>

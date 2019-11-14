@@ -40,9 +40,12 @@ public class NotepadService {
      * @return
      */
     public Single<Notepad> createNotepad(Notepad notepad, UUID userUuid) {
-        notepad.setDateCreated(Timestamp.from(timeProvider.now()));
+        Timestamp now = Timestamp.from(timeProvider.now());
+        notepad.setDateCreated(now);
         notepad.setCreatorUserUuid(userUuid);
         notepad.setUuid(UUID.randomUUID());
+        notepad.setEditorUserUuid(userUuid);
+        notepad.setDateEdited(now);
 
         return notepadRepository
                 .create(notepad)
@@ -68,6 +71,9 @@ public class NotepadService {
         return getNotepad(notepadEdit.getUuid(), userUuid)
                 .map(existingNotepad -> {
                     existingNotepad.setName(notepadEdit.getName());
+                    existingNotepad.setBody(notepadEdit.getBody());
+                    existingNotepad.setEditorUserUuid(userUuid);
+                    existingNotepad.setDateEdited(Timestamp.from(timeProvider.now()));
                     return existingNotepad;
                 })
                 .flatMap(notepadRepository::saveNotepad);

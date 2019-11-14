@@ -10,14 +10,16 @@ public class NotepadMapper {
         return new NotepadDto()
                 .setUuid(notepad.getUuid())
                 .setName(notepad.getName())
+                .setBody(notepad.getBody())
                 .setUserUuid(notepad.getCreatorUserUuid())
-                .setLastUpdatedTimestamp(notepad.getDateCreated().getTime());
+                .setLastUpdatedTimestamp(notepad.getDateEdited().getTime());
     }
 
     public static Notepad toEntity(NotepadDto notepadDTO) {
         Notepad notepad = new Notepad();
         notepad.setName(notepadDTO.getName());
         notepad.setUuid(notepadDTO.getUuid());
+        notepad.setBody(notepadDTO.getBody() == null ? "" : notepadDTO.getBody());
         return notepad;
     }
 

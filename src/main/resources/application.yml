@@ -26,6 +26,9 @@ micronaut:
       login:
         enabled: true
         path: /api/login
+      logout:
+        enabled: true
+        path: /api/logout
 
     token:
       jwt:
@@ -34,8 +37,8 @@ micronaut:
           enabled: false
         cookie:
           enabled: true
-          loginFailureTargetUrl: /#/login
-          loginSuccessTargetUrl: /#/
+          loginFailureTargetUrl: http://localhost:8080/#/login
+          loginSuccessTargetUrl: http://localhost:8080/#/
         signatures:
           secret:
             generator:

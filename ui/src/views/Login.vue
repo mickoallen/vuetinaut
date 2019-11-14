@@ -44,7 +44,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-snackbar :color=getSnackColor v-model="showSnack">{{ snackMessage }}</v-snackbar>
+            <v-snackbar :color="getSnackColor" v-model="showSnack">{{ snackMessage }}</v-snackbar>
         </v-content>
     </v-app>
 </template>
@@ -64,13 +64,12 @@ export default {
         };
     },
 
-
-    computed:{
-        getSnackColor(){
-            return this.snackError ? 'error' : 'success';
+    computed: {
+        getSnackColor() {
+            return this.snackError ? "error" : "success";
         }
     },
-    
+
     props: {
         source: String
     },
@@ -80,7 +79,7 @@ export default {
             var loginRequest = {
                 username: this.username,
                 password: this.password
-            }
+            };
 
             axios
                 .post(SERVER_URL + "/login", loginRequest)
@@ -88,17 +87,16 @@ export default {
                     response;
                     this.showSnack = true;
                     this.snackError = false;
-                    this.snackMessage =
-                        "Logged in";
+                    this.snackMessage = "Logged in";
+                    this.$router.replace("/");
                 })
                 .catch(error => {
                     this.showSnack = true;
                     this.snackError = true;
-                    this.snackMessage ="Error logging in";
+                    this.snackMessage = "Error logging in";
 
                     if (error.response.status === 400) {
-                        this.snackMessage =
-                            "Username/password invalid";
+                        this.snackMessage = "Username/password invalid";
                     } else {
                         this.snackMessage = error;
                     }
