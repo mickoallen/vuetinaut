@@ -1,0 +1,62 @@
+<template>
+    <v-list dense>
+        <v-list-item>
+            <v-list-item-title>NOTES</v-list-item-title>
+            <v-btn @click.stop="createNote" rounded text small>
+                <v-icon>mdi-file-plus-outline</v-icon>
+            </v-btn>
+        </v-list-item>
+        <v-list-item
+            @click.stop="selectNote(note)"
+            v-for="note in sortedNotes"
+            :key="note.uuid"
+            link
+            :class="`elevation-${note.uuid == selectedNoteUuid ? 2 : 0}` "
+            dense
+        >
+            <v-list-item-title>
+                <span v-if="noteIsUnsaved(note.uuid)">*</span>
+                {{note.name}}
+            </v-list-item-title>
+        </v-list-item>
+    </v-list>
+</template>
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+    computed: {
+        ...mapState({
+            notes: state => state.notes,
+            selectedNoteUuid: state => state.selectedNoteUuid,
+            unsavedNotes: state => state.unsavedNotes
+        }),
+
+        sortedNotes() {
+            return this.notes.slice(0).sort(function(x, y) {
+                return y.lastUpdatedTimestamp - x.lastUpdatedTimestamp;
+            });
+        }
+    },
+
+    watch: {
+        $route(to, from) {
+            // react to route changes...
+            console.log("Going from " + from + " to " + to);
+        }
+    },
+
+    methods: {
+        noteIsUnsaved(noteUuid) {
+            return this.unsavedNotes.filter(note => note.uuid == noteUuid)[0] != null;
+        },
+        selectNote(note) {
+            this.$store.commit("selectNote", note);
+        },
+        createNote() {
+            this.$store.commit("createNote");
+        }
+    }
+};
+</script>
