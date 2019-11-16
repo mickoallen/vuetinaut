@@ -4,7 +4,7 @@ import Router from 'vue-router';
 import Login from './views/Login.vue';
 import CreateAccount from './views/CreateAccount.vue';
 import ForgotPassword from './views/ForgotPassword.vue';
-import ComponentizedNotes from './views/ComponentizedNotes.vue';
+import Notes from './views/Notes.vue';
 
 Vue.use(Router);
 
@@ -17,7 +17,7 @@ export default new Router({
     {
       path: '/notes*',
       name: 'notes',
-      component: ComponentizedNotes
+      component: Notes
     },
     {
       path: '/about',

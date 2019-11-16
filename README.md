@@ -4,17 +4,23 @@ Template project for prototyping cool things.
 
 
 ##### Built from....
-Micronaut, Vue + Vuetify, Postgres
+Micronaut, Vue, Vuetify, Postgres
 
 ## Features
 
+A cool cloudbased notepad app.
 
-- Swagger doc generation from API
-- JS client generated from Swagger docs
-    
-docker run --rm -v ${PWD}:/local openapitools/openapi-generator-cli generate -i local/target/classes/META-INF/swagger/vuetinaut-0.1.yml -g javascript -o /local/ui/client
+todo - add pictures
 
-docker run --rm -v ${PWD}:/local openapitools/openapi-generator-cli generate \
-    -i https://raw.githubusercontent.com/openapitools/openapi-generator/master/modules/openapi-generator/src/test/resources/2_0/petstore.yaml \
-    -g go \
-    -o /local/out/go
+## Local development
+For Intellij users, read the Micronaut guides for setting up the IDE.
+
+1. Start dependencies (db) ```docker-compose up```
+2. Run/debug main class ```com.mick.vuetinaut.Application```
+3. Start the UI webpack dev server ```cd ui && npm run serve```
+4. Open browser ```http://localhost:8080/```
+5. Enjoy!
+
+## Building and deployment
+TODO
+

@@ -9,6 +9,7 @@
                             flat
                             rounded
                             solo
+                            autofocus=""
                             @keyup.native="textChanged"
                             v-model="computedSelectedNote.name"
                         ></v-text-field>
@@ -31,7 +32,7 @@
                             <v-card>
                                 <v-card-text>Delete '{{computedSelectedNote.name}}'?</v-card-text>
                                 <v-card-actions>
-                                    <v-btn @click.stop="deleteNotepad" small rounded>Yes</v-btn>
+                                    <v-btn @click.stop="deleteNote" small rounded>Yes</v-btn>
                                     <v-spacer />
                                     <v-btn @click="deleteOverlay = !deleteOverlay" small rounded>No</v-btn>
                                 </v-card-actions>
@@ -106,6 +107,9 @@ export default {
                     time: Date.now()
                 });
             }
+        },
+        deleteNote() {
+            this.$store.commit("deleteNote", this.selectedNoteUuid)
         }
     }
 };

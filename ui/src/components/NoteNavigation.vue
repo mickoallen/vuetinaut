@@ -40,13 +40,6 @@ export default {
         }
     },
 
-    watch: {
-        $route(to, from) {
-            // react to route changes...
-            console.log("Going from " + from + " to " + to);
-        }
-    },
-
     methods: {
         noteIsUnsaved(noteUuid) {
             return this.unsavedNotes.filter(note => note.uuid == noteUuid)[0] != null;

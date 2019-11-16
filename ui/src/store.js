@@ -4,11 +4,9 @@ import axios from "axios";
 import { SERVER_URL } from "./config.js";
 import short from "short-uuid";
 import router from './router'
-// import { setInterval } from "timers";
 
 const translator = short();
 Vue.use(Vuex);
-// setInterval(this.saveUpdatedNotepads, 2000);
 
 export default new Vuex.Store({
   state: {
@@ -17,6 +15,7 @@ export default new Vuex.Store({
     unsavedNotes: [],
     ignoreNextEditEvent: true,
     noteHasBeenEdited: false,
+    deleteOverlay: false
   },
   mutations: {
     loadNotes(state) {
@@ -67,7 +66,7 @@ export default new Vuex.Store({
         )[0];
 
         if (noteToRouteTo == null) {
-          this.commit("selectNote", state.notepads[0]);
+          this.commit("selectNote", state.notes[0]);
         } else {
           this.commit("selectNote", noteToRouteTo);
         }
@@ -100,6 +99,41 @@ export default new Vuex.Store({
       }
 
       state.unsavedNotes.push(unsavedNoteEvent);
+    },
+
+    saveNote(state, noteToSave) {
+      let indexOfNote = state.unsavedNotes.map(note => note.uuid).indexOf(noteToSave.uuid);
+      state.unsavedNotes.splice(indexOfNote, 1);
+
+      axios
+        .post(
+          SERVER_URL + "/notepads/" + noteToSave.uuid,
+          noteToSave
+        )
+        .then(response => {
+          let indexOfSavedNote = state.notes.map(note => note.uuid).indexOf(noteToSave.uuid);
+          state.notes.splice(indexOfSavedNote, 1);
+          state.notes.push(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+    deleteNote(state, noteUuidToDelete) {
+      axios
+        .delete(SERVER_URL + "/notepads/" + noteUuidToDelete)
+        .then(response => {
+          if (response != null) {
+            let indexOfDeletedNote = state.notes.map(note => note.uuid).indexOf(noteUuidToDelete);
+            state.notes.splice(indexOfDeletedNote, 1);
+            
+            this.commit("setSelectedNote");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
 
   },
