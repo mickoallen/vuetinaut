@@ -86,4 +86,18 @@ public class UserDao extends DAOImpl<UserRecord, com.mick.vuetinaut.jooq.model.t
     public List<com.mick.vuetinaut.jooq.model.tables.pojos.User> fetchByDateCreated(Timestamp... values) {
         return fetch(User.USER.DATE_CREATED, values);
     }
+
+    /**
+     * Fetch records that have <code>last_login IN (values)</code>
+     */
+    public List<com.mick.vuetinaut.jooq.model.tables.pojos.User> fetchByLastLogin(Timestamp... values) {
+        return fetch(User.USER.LAST_LOGIN, values);
+    }
+
+    /**
+     * Fetch records that have <code>user_type IN (values)</code>
+     */
+    public List<com.mick.vuetinaut.jooq.model.tables.pojos.User> fetchByUserType(String... values) {
+        return fetch(User.USER.USER_TYPE, values);
+    }
 }

@@ -17,5 +17,10 @@ export default {
 #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
+    background-image: url("./assets/bright-geometric-shape-background/872.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
+    
 </style>

@@ -5,6 +5,9 @@ import com.mick.vuetinaut.jooq.model.tables.daos.UserDao;
 import com.mick.vuetinaut.jooq.model.tables.pojos.User;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import org.jooq.exception.DataAccessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,6 +18,7 @@ import static org.jooq.impl.DSL.field;
 
 @Singleton
 public class UserRepository {
+    private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
     private final UserDao userDao;
 
     @Inject
@@ -24,7 +28,12 @@ public class UserRepository {
 
     public Single<User> insert(User user) {
         return Single.fromCallable(() -> {
-            userDao.insert(user);
+            try {
+                userDao.insert(user);
+            }catch (DataAccessException e){
+                logger.error("Failed to create user: {}", user, e);
+                throw e;
+            }
             return user;
         });
     }

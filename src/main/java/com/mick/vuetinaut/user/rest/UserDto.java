@@ -1,14 +1,16 @@
 package com.mick.vuetinaut.user.rest;
 
+import com.mick.vuetinaut.user.UserType;
+
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 import java.util.UUID;
 
 public class UserDto {
     private UUID uuid;
-
     @NotBlank
     private String username;
+    private UserType userType = UserType.NORMAL;
 
     public UserDto() {
     }
@@ -31,18 +33,28 @@ public class UserDto {
         return this;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public UserDto setUserType(UserType userType) {
+        this.userType = userType;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
         return Objects.equals(uuid, userDto.uuid) &&
-                Objects.equals(username, userDto.username);
+                Objects.equals(username, userDto.username) &&
+                userType == userDto.userType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, username);
+        return Objects.hash(uuid, username, userType);
     }
 
     @Override
@@ -50,6 +62,7 @@ public class UserDto {
         return "UserDto{" +
                 "uuid=" + uuid +
                 ", username='" + username + '\'' +
+                ", userType=" + userType +
                 '}';
     }
 }

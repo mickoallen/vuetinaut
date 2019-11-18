@@ -1,7 +1,10 @@
 <template>
     <v-list dense>
         <v-list-item>
-            <v-btn @click.stop="logout">Logout</v-btn>
+            <p>Username: {{this.currentUser.username}}</p>
+        </v-list-item>
+        <v-list-item>
+            <v-btn small rounded @click.stop="logout" class="font-weight-bold" color="primary">Logout</v-btn>
         </v-list-item>
     </v-list>
 </template>
@@ -9,15 +12,19 @@
 <script>
 import axios from "axios";
 import { SERVER_URL } from "../config.js";
+import { mapState } from "vuex";
 
 export default {
-    components: {  },
-    props: {
-    },
-
     data() {
         return {
         };
+    },
+
+    computed: {
+        ...mapState({
+            currentUser: state => state.currentUser,
+            notes: state => state.notes
+        })
     },
 
     methods: {

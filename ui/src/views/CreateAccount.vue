@@ -1,52 +1,59 @@
 <template>
-    <v-app id="inspire">
-        <v-content>
-            <v-container class="fill-height" fluid>
-                <v-row align="center" justify="center">
-                    <v-col cols="12" sm="8" md="4">
-                        <v-card class="elevation-12">
-                            <v-toolbar color="primary" dark flat>
-                                <v-toolbar-title>Create Account</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form>
-                                    <v-text-field
-                                        v-model="username"
-                                        label="Username"
-                                        name="username"
-                                        prepend-icon="mdi-account"
-                                        type="text"
-                                    ></v-text-field>
-                                    <v-text-field
-                                        v-model="password"
-                                        id="password"
-                                        label="Password"
-                                        name="password"
-                                        prepend-icon="mdi-lock"
-                                        type="password"
-                                    ></v-text-field>
-                                </v-form>
-                                {{info}}
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn @click.stop="createUser" color="primary">Create account</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-col>
+    <div>
+        <v-container>
+            <v-col>
+                <v-row justify="center">
+                    <v-card elevation="5">
+                        <v-card-title>
+                            <v-spacer />
+                            <v-img src="../assets/logo-main.png"></v-img>
+                            <v-spacer />
+                        </v-card-title>
+                        <v-card-text>
+                            <v-form ref="createAccountForm" v-model="valid" lazy-validation>
+                                <v-text-field
+                                    v-model="username"
+                                    label="Username"
+                                    name="login"
+                                    prepend-icon="mdi-account"
+                                    type="text"
+                                    :rules="nameRules"
+                                ></v-text-field>
+                                <v-text-field
+                                    v-model="passwordOne"
+                                    id="password"
+                                    label="Password"
+                                    name="password"
+                                    prepend-icon="mdi-lock"
+                                    type="password"
+                                    :rules="nameRules"
+                                ></v-text-field>
+                            </v-form>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer />
+                            <v-btn
+                                :disabled="!valid"
+                                @click.stop="createUser"
+                                class="font-weight-bold"
+                                color="primary"
+                            >Create Account</v-btn>
+                            <v-spacer />
+                        </v-card-actions>
+                        <v-card-text>
+                            <p class="text-center">
+                                You can try out MNotes as a
+                                <router-link to="/guest-login">guest</router-link>
+                            </p>
+                            <p class="text-center">
+                                <router-link to="/login">Back to login</router-link>
+                            </p>
+                        </v-card-text>
+                    </v-card>
                 </v-row>
-            </v-container>
-            <v-snackbar
-                color="success"
-                v-model="createAccountResponseSuccessSnackbar"
-            >{{ createAccountResponseMessage }}</v-snackbar>
-            <v-snackbar
-                color="error"
-                v-model="createAccountResponseErrorSnackbar"
-            >{{ createAccountResponseMessage }}</v-snackbar>
-        </v-content>
-    </v-app>
+            </v-col>
+        </v-container>
+    </div>
 </template>
 
 <script>
@@ -57,22 +64,22 @@ export default {
     data() {
         return {
             username: "",
-            password: "",
-            info: "",
-            createAccountResponseSuccessSnackbar: false,
-            createAccountResponseErrorSnackbar: false,
-            createAccountResponseMessage: ""
+            passwordOne: "",
+            valid: null,
+            nameRules: [
+                v => !!v || "Required"
+            ]
         };
-    },
-
-    props: {
-        source: String
     },
 
     methods: {
         createUser() {
+            if (!this.$refs.createAccountForm.validate()) {
+                return;
+            }
+
             var createUserRequest = {
-                password: this.password,
+                password: this.passwordOne,
                 user: {
                     username: this.username
                 }

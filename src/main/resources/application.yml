@@ -32,6 +32,8 @@ micronaut:
 
     token:
       jwt:
+        generator:
+          access-token-expiration: 31536000000 #large number
         enabled: true
         bearer:
           enabled: false

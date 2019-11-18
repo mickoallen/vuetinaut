@@ -8,7 +8,7 @@ Micronaut, Vue, Vuetify, Postgres
 
 ## Features
 
-A cool cloudbased notepad app.
+A cool online notepad app.
 
 todo - add pictures
 

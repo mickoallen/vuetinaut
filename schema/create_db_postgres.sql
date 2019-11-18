@@ -5,6 +5,8 @@ CREATE TABLE public."user"
     username varchar(255) COLLATE pg_catalog."default" NOT NULL,
     password varchar(255) COLLATE pg_catalog."default" NOT NULL,
 	date_created timestamp NOT NULL,
+	last_login timestamp,
+	user_type varchar(255),
     CONSTRAINT user_pkey PRIMARY KEY (uuid)
 )
 WITH (

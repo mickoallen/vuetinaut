@@ -4,16 +4,17 @@
 
         <v-app-bar dense app clipped-left clipped-right>
             <v-btn small rounded text @click.stop="noteNavigation = !noteNavigation">
-                <v-icon>mdi-menu</v-icon>
+                <v-icon color="primary" >mdi-menu</v-icon>
             </v-btn>
             <v-toolbar-title class="mr-12 align-center">
-                <span class="title">MNotes</span>
+                <span class="title">MNotes</span>   
             </v-toolbar-title>
             <v-spacer />
-            <v-btn small rounded text @click.stop="infoPanel = !infoPanel">
-                <v-icon v-if="infoPanel">mdi-arrow-right</v-icon>
-                <v-icon v-if="!infoPanel">mdi-arrow-left</v-icon>
-            </v-btn>
+            <v-btn small rounded @click.stop="logout" class="font-weight-bold" color="primary">Logout</v-btn>
+            <!-- <v-btn small rounded text @click.stop="infoPanel = !infoPanel">
+                <v-icon color="primary" v-if="infoPanel">mdi-arrow-right</v-icon>
+                <v-icon color="primary" v-if="!infoPanel">mdi-arrow-left</v-icon>
+            </v-btn> -->
         </v-app-bar>
 
         <v-navigation-drawer v-model="noteNavigation" app clipped>
@@ -98,11 +99,16 @@ export default {
 
         saveNote(note) {
             this.$store.commit("saveNote", note);
+        },
+
+        logout() {
+            this.$store.commit("logout");
         }
     },
 
     mounted() {
         this.$store.commit("loadNotes");
+        this.$store.commit("getCurrentUser");
         setInterval(this.saveUnsavedNotes, 2000);
     }
 };

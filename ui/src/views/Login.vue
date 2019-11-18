@@ -1,52 +1,57 @@
 <template>
-    <v-app id="inspire">
-        <v-content>
-            <v-container class="fill-height" fluid>
-                <v-row align="center" justify="center">
-                    <v-col cols="12" sm="8" md="4">
-                        <v-card class="elevation-12">
-                            <v-toolbar color="primary" dark flat>
-                                <v-toolbar-title>Login</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form>
-                                    <v-text-field
-                                        v-model="username"
-                                        label="Login"
-                                        name="login"
-                                        prepend-icon="mdi-account"
-                                        type="text"
-                                    ></v-text-field>
-                                    <v-text-field
-                                        v-model="password"
-                                        id="password"
-                                        label="Password"
-                                        name="password"
-                                        prepend-icon="mdi-lock"
-                                        type="password"
-                                    ></v-text-field>
-                                </v-form>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn @click.stop="login" color="primary">Login</v-btn>
-                            </v-card-actions>
-                            <v-card-text>
-                                <router-link to="/create-account">
-                                    <p class="text-center">Don't have an account?</p>
-                                </router-link>
-                                <router-link to="/forgot-password">
-                                    <p class="text-center">Forgot password?</p>
-                                </router-link>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
+    <div>
+        <v-container>
+            <v-col>
+                <v-row justify="center">
+                    <v-card elevation="5">
+                        <v-card-title>
+                            <v-spacer />
+                            <v-img src="../assets/logo-main.png"></v-img>
+                            <v-spacer />
+                        </v-card-title>
+                        <v-card-text>
+                            <v-form ref="loginForm" v-model="valid" lazy-validation>
+                                <v-text-field
+                                    v-model="username"
+                                    label="Login"
+                                    name="login"
+                                    prepend-icon="mdi-account"
+                                    type="text"
+                                    :rules="nameRules"
+                                ></v-text-field>
+                                <v-text-field
+                                    v-model="password"
+                                    id="password"
+                                    label="Password"
+                                    name="password"
+                                    prepend-icon="mdi-lock"
+                                    type="password"
+                                    :rules="nameRules"
+                                ></v-text-field>
+                            </v-form>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                @click.stop="login"
+                                class="font-weight-bold"
+                                color="primary"
+                            >Login</v-btn>
+                            <v-spacer></v-spacer>
+                        </v-card-actions>
+                        <v-card-text>
+                            <p class="text-center">
+                                Don't have an account?
+                                <router-link to="/create-account">Create one</router-link> or
+                                <router-link to="/guest-login">Try as guest</router-link>
+                            </p>
+                        </v-card-text>
+                    </v-card>
                 </v-row>
-            </v-container>
-            <v-snackbar :color="getSnackColor" v-model="showSnack">{{ snackMessage }}</v-snackbar>
-        </v-content>
-    </v-app>
+            </v-col>
+        </v-container>
+        <v-snackbar :color="getSnackColor" v-model="showSnack">{{ snackMessage }}</v-snackbar>
+    </div>
 </template>
 
 <script>
@@ -60,7 +65,9 @@ export default {
             password: "",
             snackError: false,
             showSnack: false,
-            snackMessage: ""
+            snackMessage: "",
+            valid: true,
+            nameRules: [v => !!v || "Required"]
         };
     },
 
@@ -76,6 +83,10 @@ export default {
 
     methods: {
         login() {
+            if (!this.$refs.loginForm.validate()) {
+                return;
+            }
+
             var loginRequest = {
                 username: this.username,
                 password: this.password

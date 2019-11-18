@@ -10,6 +10,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    currentUser: {
+      uuid: "",
+      username: "",
+      userType: ""
+    },
     selectedNoteUuid: 1,
     notes: [],
     unsavedNotes: [],
@@ -18,6 +23,17 @@ export default new Vuex.Store({
     deleteOverlay: false
   },
   mutations: {
+    getCurrentUser(state) {
+      axios
+        .get(SERVER_URL + "/users/current")
+        .then(response => {
+          state.currentUser = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     loadNotes(state) {
       axios
         .get(SERVER_URL + "/notepads")
@@ -43,7 +59,7 @@ export default new Vuex.Store({
 
     setSelectedNote(state) {
       if (state.notes[0] == null) {
-        state.createNote();
+        this.commit("createNote");
       } else {
         var noteId = router.currentRoute.path.replace("/notes", "");
 
@@ -127,12 +143,28 @@ export default new Vuex.Store({
           if (response != null) {
             let indexOfDeletedNote = state.notes.map(note => note.uuid).indexOf(noteUuidToDelete);
             state.notes.splice(indexOfDeletedNote, 1);
-            
+
             this.commit("setSelectedNote");
           }
         })
         .catch(error => {
           console.log(error);
+        });
+    },
+
+    logout(state) {
+      state.selectedNoteUuid = null;
+      state.notes = [];
+      state.unsavedNotes = [];
+      state.currentUser = {};
+      axios
+        .post(SERVER_URL + "/logout")
+        .then(response => {
+          response;
+          router.replace("/login");
+        })
+        .catch(error => {
+          console.error(error);
         });
     }
 

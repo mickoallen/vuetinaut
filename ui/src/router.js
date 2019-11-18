@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import Login from './views/Login.vue';
 import CreateAccount from './views/CreateAccount.vue';
 import ForgotPassword from './views/ForgotPassword.vue';
+import GuestLogin from './views/GuestLogin.vue';
 import Notes from './views/Notes.vue';
 
 Vue.use(Router);
@@ -36,6 +37,11 @@ export default new Router({
       path: '/create-account',
       name: 'create-account',
       component: CreateAccount
+    },
+    {
+      path: '/guest-login',
+      name: 'guest-login',
+      component: GuestLogin
     },
     {
       path: '/forgot-password',

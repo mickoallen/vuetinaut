@@ -6,10 +6,8 @@
                     <v-card-title>
                         <v-text-field
                             outlined
-                            flat
                             rounded
-                            solo
-                            autofocus=""
+                            label="Name"
                             @keyup.native="textChanged"
                             v-model="computedSelectedNote.name"
                         ></v-text-field>
@@ -25,19 +23,35 @@
                     <v-card-actions>
                         <v-label>Last saved {{getRelativeUpdateTime(computedSelectedNote.lastUpdatedTimestamp)}}</v-label>
                         <v-spacer />
-                        <v-btn @click="deleteOverlay = !deleteOverlay" small rounded text>
-                            <v-icon>mdi-delete</v-icon>
+                        <v-btn @click="shareOverlay = !shareOverlay" small rounded text>
+                            <v-icon color="primary">mdi-share-variant</v-icon>
                         </v-btn>
-                        <v-overlay v-model="deleteOverlay" absolute>
-                            <v-card>
-                                <v-card-text>Delete '{{computedSelectedNote.name}}'?</v-card-text>
+                        <v-btn @click="deleteOverlay = !deleteOverlay" small rounded text>
+                            <v-icon color="primary">mdi-delete</v-icon>
+                        </v-btn>
+
+                        <v-overlay v-model="shareOverlay" absolute>
+                            <v-card light>
+                                <v-card-text>Sharing '{{computedSelectedNote.name}}'?</v-card-text>
                                 <v-card-actions>
-                                    <v-btn @click.stop="deleteNote" small rounded>Yes</v-btn>
+                                    <v-btn class="font-weight-bold" color="primary" @click.stop="deleteNote" small rounded>Yes</v-btn>
                                     <v-spacer />
-                                    <v-btn @click="deleteOverlay = !deleteOverlay" small rounded>No</v-btn>
+                                    <v-btn class="font-weight-bold" color="primary" @click="deleteOverlay = !deleteOverlay" small rounded>No</v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-overlay>
+
+                        <v-overlay v-model="deleteOverlay" absolute>
+                            <v-card light>
+                                <v-card-text>Delete '{{computedSelectedNote.name}}'?</v-card-text>
+                                <v-card-actions>
+                                    <v-btn class="font-weight-bold" color="primary" @click.stop="deleteNote" small rounded>Yes</v-btn>
+                                    <v-spacer />
+                                    <v-btn class="font-weight-bold" color="primary" @click="deleteOverlay = !deleteOverlay" small rounded>No</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-overlay>
+
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -60,7 +74,8 @@ export default {
                 [{ list: "ordered" }, { list: "bullet" }],
                 ["code-block"]
             ],
-            deleteOverlay: false
+            deleteOverlay: false,
+            shareOverlay: false
         };
     },
 
@@ -91,6 +106,7 @@ export default {
         },
         selectedNoteUuid() {
             this.deleteOverlay = false;
+            this.shareOverlay = false;
         }
     },
 

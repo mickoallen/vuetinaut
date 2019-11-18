@@ -24,12 +24,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -1716781450;
+    private static final long serialVersionUID = -1996881948;
 
     private UUID      uuid;
     private String    username;
     private String    password;
     private Timestamp dateCreated;
+    private Timestamp lastLogin;
+    private String    userType;
 
     public User() {}
 
@@ -38,18 +40,24 @@ public class User implements Serializable {
         this.username = value.username;
         this.password = value.password;
         this.dateCreated = value.dateCreated;
+        this.lastLogin = value.lastLogin;
+        this.userType = value.userType;
     }
 
     public User(
         UUID      uuid,
         String    username,
         String    password,
-        Timestamp dateCreated
+        Timestamp dateCreated,
+        Timestamp lastLogin,
+        String    userType
     ) {
         this.uuid = uuid;
         this.username = username;
         this.password = password;
         this.dateCreated = dateCreated;
+        this.lastLogin = lastLogin;
+        this.userType = userType;
     }
 
     public UUID getUuid() {
@@ -82,6 +90,22 @@ public class User implements Serializable {
 
     public void setDateCreated(Timestamp dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public Timestamp getLastLogin() {
+        return this.lastLogin;
+    }
+
+    public void setLastLogin(Timestamp lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public String getUserType() {
+        return this.userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     @Override
@@ -117,6 +141,18 @@ public class User implements Serializable {
         }
         else if (!dateCreated.equals(other.dateCreated))
             return false;
+        if (lastLogin == null) {
+            if (other.lastLogin != null)
+                return false;
+        }
+        else if (!lastLogin.equals(other.lastLogin))
+            return false;
+        if (userType == null) {
+            if (other.userType != null)
+                return false;
+        }
+        else if (!userType.equals(other.userType))
+            return false;
         return true;
     }
 
@@ -128,6 +164,8 @@ public class User implements Serializable {
         result = prime * result + ((this.username == null) ? 0 : this.username.hashCode());
         result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
         result = prime * result + ((this.dateCreated == null) ? 0 : this.dateCreated.hashCode());
+        result = prime * result + ((this.lastLogin == null) ? 0 : this.lastLogin.hashCode());
+        result = prime * result + ((this.userType == null) ? 0 : this.userType.hashCode());
         return result;
     }
 
@@ -139,6 +177,8 @@ public class User implements Serializable {
         sb.append(", ").append(username);
         sb.append(", ").append(password);
         sb.append(", ").append(dateCreated);
+        sb.append(", ").append(lastLogin);
+        sb.append(", ").append(userType);
 
         sb.append(")");
         return sb.toString();

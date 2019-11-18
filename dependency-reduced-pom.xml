@@ -135,6 +135,30 @@
                 <goals>
                   <goal>generate</goal>
                 </goals>
+                <configuration>
+                  <jdbc>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql:postgres</url>
+                    <user>postgres</user>
+                    <password>postgres</password>
+                  </jdbc>
+                  <generator>
+                    <generate>
+                      <pojos>true</pojos>
+                      <daos>true</daos>
+                      <pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
+                    </generate>
+                    <database>
+                      <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                      <includes>.*</includes>
+                      <inputSchema>public</inputSchema>
+                    </database>
+                    <target>
+                      <packageName>com.mick.vuetinaut.jooq.model</packageName>
+                      <directory>src/main/java</directory>
+                    </target>
+                  </generator>
+                </configuration>
               </execution>
             </executions>
             <dependencies>
@@ -142,6 +166,7 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>42.2.6</version>
+                <scope>compile</scope>
               </dependency>
             </dependencies>
             <configuration>
