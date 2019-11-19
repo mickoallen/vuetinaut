@@ -19,6 +19,7 @@ import static org.jooq.impl.DSL.field;
 @Singleton
 public class UserRepository {
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
+    private static final int USER_SEARCH_LIMIT = 100;
     private final UserDao userDao;
 
     @Inject
@@ -96,6 +97,7 @@ public class UserRepository {
                                         field(com.mick.vuetinaut.jooq.model.tables.User.USER.USERNAME)
                                                 .likeIgnoreCase("%" + username + "%")
                                 )
+                                .limit(USER_SEARCH_LIMIT)
                                 .fetchInto(User.class)
                 )
                 .subscribeOn(Schedulers.io());

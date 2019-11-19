@@ -12,8 +12,7 @@
                             v-model="computedSelectedNote.name"
                         ></v-text-field>
                     </v-card-title>
-                    <v-card-subtitle></v-card-subtitle>
-                    <v-card-text>
+                    <v-card-text class="black--text">
                         <vue-editor
                             @text-change="textChanged"
                             v-model="computedSelectedNote.body"
@@ -23,7 +22,7 @@
                     <v-card-actions>
                         <v-label>Last saved {{getRelativeUpdateTime(computedSelectedNote.lastUpdatedTimestamp)}}</v-label>
                         <v-spacer />
-                        <v-btn @click="shareOverlay = !shareOverlay" small rounded text>
+                        <v-btn @click="openShareOverlay" small rounded text>
                             <v-icon color="primary">mdi-share-variant</v-icon>
                         </v-btn>
                         <v-btn @click="deleteOverlay = !deleteOverlay" small rounded text>
@@ -32,26 +31,76 @@
 
                         <v-overlay v-model="shareOverlay" absolute>
                             <v-card light>
-                                <v-card-text>Sharing '{{computedSelectedNote.name}}'?</v-card-text>
+                                <v-card-title class="justify-center">Share Note</v-card-title>
+
+                                <v-card-text>
+                                    <v-autocomplete
+                                        v-model="selectedUser"
+                                        :items="users"
+                                        :loading="isLoading"
+                                        :search-input.sync="userSearchInput"
+                                        item-text="username"
+                                        item-value="uuid"
+                                        placeholder="Search for user"
+                                        prepend-icon="mdi-user-search"
+                                        return-object
+                                        clearable
+                                    />
+                                    <p
+                                        v-if="selectedUser"
+                                        class="text-center black--text"
+                                    >User '{{selectedUser.username}}' will have edit access to '{{computedSelectedNote.name}}'</p>
+                                </v-card-text>
+
                                 <v-card-actions>
-                                    <v-btn class="font-weight-bold" color="primary" @click.stop="deleteNote" small rounded>Yes</v-btn>
                                     <v-spacer />
-                                    <v-btn class="font-weight-bold" color="primary" @click="deleteOverlay = !deleteOverlay" small rounded>No</v-btn>
+                                    <v-btn
+                                        class="font-weight-bold"
+                                        color="primary"
+                                        @click.stop="shareNote"
+                                        small
+                                        rounded
+                                    >Share</v-btn>
+                                    <v-spacer />
+                                    <v-btn
+                                        class="font-weight-bold"
+                                        color="primary"
+                                        @click="shareOverlay = !shareOverlay"
+                                        small
+                                        rounded
+                                    >Cancel</v-btn>
+                                    <v-spacer />
                                 </v-card-actions>
                             </v-card>
                         </v-overlay>
 
                         <v-overlay v-model="deleteOverlay" absolute>
                             <v-card light>
-                                <v-card-text>Delete '{{computedSelectedNote.name}}'?</v-card-text>
+                                <v-card-title
+                                    class="justify-center"
+                                >Delete Note</v-card-title>
+                                <v-card-text class="text-center black--text">Confirm delete of note '{{computedSelectedNote.name}}'</v-card-text>
                                 <v-card-actions>
-                                    <v-btn class="font-weight-bold" color="primary" @click.stop="deleteNote" small rounded>Yes</v-btn>
                                     <v-spacer />
-                                    <v-btn class="font-weight-bold" color="primary" @click="deleteOverlay = !deleteOverlay" small rounded>No</v-btn>
+                                    <v-btn
+                                        class="font-weight-bold"
+                                        color="primary"
+                                        @click.stop="deleteNote"
+                                        small
+                                        rounded
+                                    >Delete</v-btn>
+                                    <v-spacer />
+                                    <v-btn
+                                        class="font-weight-bold"
+                                        color="primary"
+                                        @click="deleteOverlay = !deleteOverlay"
+                                        small
+                                        rounded
+                                    >Cancel</v-btn>
+                                    <v-spacer />
                                 </v-card-actions>
                             </v-card>
                         </v-overlay>
-
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -63,6 +112,8 @@
 import { VueEditor } from "vue2-editor";
 import moment from "moment";
 import { mapState } from "vuex";
+import { SERVER_URL } from "../config.js";
+import axios from "axios";
 
 export default {
     components: { VueEditor },
@@ -75,7 +126,13 @@ export default {
                 ["code-block"]
             ],
             deleteOverlay: false,
-            shareOverlay: false
+            shareOverlay: false,
+
+            descriptionLimit: 60,
+            users: [],
+            isLoading: false,
+            selectedUser: null,
+            userSearchInput: null
         };
     },
 
@@ -85,7 +142,6 @@ export default {
             selectedNoteUuid: state => state.selectedNoteUuid,
             ignoreNextEditEvent: state => state.ignoreNextEditEvent
         }),
-
         computedSelectedNote() {
             var selectedNote = this.notes.filter(
                 note => note.uuid == this.selectedNoteUuid
@@ -107,6 +163,36 @@ export default {
         selectedNoteUuid() {
             this.deleteOverlay = false;
             this.shareOverlay = false;
+        },
+        shareOverlay(shareOverlayValue) {
+            if (!shareOverlayValue) {
+                this.users = [];
+                this.selectedUser = null;
+                this.userSearchInput = null;
+            }
+        },
+        userSearchInput(searchValue) {
+            //only call the api ever 3rd character? this isn't great obviously
+            if (
+                this.isLoading ||
+                searchValue == null ||
+                searchValue.length % 3 != 1
+            ) {
+                return;
+            }
+
+            this.isLoading = true;
+
+            axios
+                .get(SERVER_URL + "/users?username=" + searchValue)
+                .then(response => {
+                    this.users = response.data;
+                    this.isLoading = false;
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.isLoading = false;
+                });
         }
     },
 
@@ -125,7 +211,13 @@ export default {
             }
         },
         deleteNote() {
-            this.$store.commit("deleteNote", this.selectedNoteUuid)
+            this.$store.commit("deleteNote", this.selectedNoteUuid);
+        },
+        shareNote() {
+            console.info(this.model);
+        },
+        openShareOverlay() {
+            this.shareOverlay = true;
         }
     }
 };

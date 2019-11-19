@@ -1,5 +1,7 @@
 package com.mick.vuetinaut.security;
 
+import io.micronaut.context.annotation.Value;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.inject.Inject;
@@ -15,7 +17,7 @@ public class PasswordService {
     private final String salt;
 
     @Inject
-    public PasswordService(@Named("password.salt") String salt) {
+    public PasswordService(@Value("password.salt") String salt) {
         this.salt = salt;
     }
 

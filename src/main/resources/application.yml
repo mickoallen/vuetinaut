@@ -11,7 +11,7 @@ micronaut:
       default:
         enabled: true
         mapping: "/**"
-        paths: "file:/home/mick/MickProjects/vuetinaut/ui/dist"
+        paths: "file:/opt/ui/dist"
   security:
     enabled: true
 
@@ -39,12 +39,15 @@ micronaut:
           enabled: false
         cookie:
           enabled: true
-          loginFailureTargetUrl: http://localhost:8080/#/login
-          loginSuccessTargetUrl: http://localhost:8080/#/
+          loginFailureTargetUrl: /#/login
+          loginSuccessTargetUrl: /#/
         signatures:
           secret:
             generator:
               secret: yourmomyourmomyourmomyourmomyourmomyourmomyourmomyourmom
+
+password:
+  salt: somecoolsalt
 
 db:
   url: ${DATABASE_URL:`postgresql://postgres:postgres@localhost:5432/postgres`}

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller(UserController.USERS_ROUTE)
 public class UserController {
@@ -46,10 +47,15 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON
     )
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    public Single<MutableHttpResponse<List<UserDto>>> searchByUsername(final @QueryValue("username") String username) {
+    public Single<MutableHttpResponse<List<UserDto>>> searchByUsername(final @QueryValue("username") String username, final Principal principal) {
         return userService
                 .searchByUsername(username)
                 .map(UserMapper::toDtos)
+                .map(userDtos -> userDtos //filter current user for list
+                        .stream()
+                        .filter(userDto -> !userDto.getUuid().equals(PrincipalUtils.getUserUuid(principal)))
+                        .collect(Collectors.toList())
+                )
                 .map(HttpResponse::ok)
                 .onErrorResumeNext(ErrorHandler::handleError);
     }

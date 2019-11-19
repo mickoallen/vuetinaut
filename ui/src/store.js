@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from "axios";
 import { SERVER_URL } from "./config.js";
 import short from "short-uuid";
-import router from './router'
+import router from './router';
 
 const translator = short();
 Vue.use(Vuex);

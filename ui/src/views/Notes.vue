@@ -21,32 +21,34 @@
             <NoteNavigation />
         </v-navigation-drawer>
 
-        <v-navigation-drawer v-model="infoPanel" app clipped right>
+        <!-- <v-navigation-drawer v-model="infoPanel" app clipped right>
             <InfoPanel />
-        </v-navigation-drawer>
+        </v-navigation-drawer> -->
 
         <NoteEditor />
+
+        <v-card class="grey" max-width="300" v-if="userIsGuest"> 
+            <v-card-title >Guest Access</v-card-title>
+            <v-card-text>As a guest you have full access to all the features. This account will be delete in 24 hours.</v-card-text>
+        </v-card>
     </div>
 </template>
 
 <script>
 import NoteNavigation from "../components/NoteNavigation.vue";
 import NoteEditor from "../components/NoteEditor.vue";
-import InfoPanel from "../components/InfoPanel.vue";
 import { mapState } from "vuex";
 import { setInterval } from "timers";
 
 export default {
     components: {
         NoteNavigation,
-        NoteEditor,
-        InfoPanel
+        NoteEditor
     },
 
     data() {
         return {
             noteNavigation: true,
-            infoPanel: false,
             notepads: [],
             showSnack: false,
             snackError: false,
@@ -58,7 +60,8 @@ export default {
         ...mapState({
             notes: state => state.notes,
             selectedNoteUuid: state => state.selectedNoteUuid,
-            unsavedNotes: state => state.unsavedNotes
+            unsavedNotes: state => state.unsavedNotes,
+            currentUser: state => state.currentUser
         }),
         pageTitle() {
             if (this.selectedNoteUuid == null || this.notes.length == 0) {
@@ -78,6 +81,9 @@ export default {
                 pageTitle = "* " + pageTitle;
             }
             return pageTitle;
+        },
+        userIsGuest(){
+            return this.currentUser.userType == "GUEST";
         }
     },
 
