@@ -2,6 +2,8 @@
 
 Template project for prototyping cool things.
 
+https://micknotes.herokuapp.com/
+
 
 ##### Built from....
 Micronaut, Vue, Vuetify, Postgres
