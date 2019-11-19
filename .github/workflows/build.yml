@@ -1,4 +1,4 @@
-name: Build and publich
+name: Build and publish
 
 on: [push]
 
@@ -26,6 +26,36 @@ jobs:
     
     - name: GitHub Action for Heroku
       uses: actions/heroku@1.0.0
+      
+    - name: login
+      uses: actions/heroku@master
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      with:
+        args: container:login
+    - name: push
+      uses: actions/heroku@master
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      with:
+        args: container:push -a micknotes web
+  
+  release:
+     runs-on: ubuntu-latest
+     steps:
+     - uses: actions/checkout@master
+     - name: login
+       uses: actions/heroku@master
+       env:
+         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+       with:
+         args: container:login
+     - name: release
+       uses: actions/heroku@master
+       env:
+         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+       with:
+         args: container:release -a micknotes web
 
     
     
