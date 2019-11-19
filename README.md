@@ -9,8 +9,8 @@ https://micknotes.herokuapp.com/
 Micronaut, Vue, Vuetify, Postgres
 
 ## Features
-
 A cool online notepad app.
+Full CI/CD using github actions
 
 todo - add pictures
 
@@ -23,6 +23,5 @@ For Intellij users, read the Micronaut guides for setting up the IDE.
 4. Open browser ```http://localhost:8080/```
 5. Enjoy!
 
-## Building and deployment
-TODO
-
+## Deployment
+Do nothing. Deploys to Heroku from push to master using GitHub actions.
