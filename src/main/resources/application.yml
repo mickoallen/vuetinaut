@@ -38,6 +38,8 @@ micronaut:
         bearer:
           enabled: false
         cookie:
+          redirect:
+            enabled: false
           enabled: true
           loginFailureTargetUrl: /#/login
           loginSuccessTargetUrl: /#/

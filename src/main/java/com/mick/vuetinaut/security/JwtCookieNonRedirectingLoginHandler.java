@@ -20,6 +20,10 @@ import java.util.Optional;
 /**
  * Default Micronaut login handler does a redirect on login, i'd rather not do that.
  */
+@Requires(
+        property = "micronaut.security.token.jwt.cookie.redirect.enabled",
+        value = "false"
+)
 @Singleton
 @Primary
 public class JwtCookieNonRedirectingLoginHandler implements LoginHandler {
