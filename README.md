@@ -25,3 +25,8 @@ For Intellij users, read the Micronaut guides for setting up the IDE.
 
 ## Deployment
 Do nothing. Deploys to Heroku from push to master using GitHub actions.
+
+## Todo
+- Note sharing
+- Make more durable so user can't lose data
+- Look for a reactive postgres client
