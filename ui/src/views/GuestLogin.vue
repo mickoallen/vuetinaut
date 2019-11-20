@@ -53,13 +53,18 @@ export default {
                             this.snackError = false;
                             this.snackMessage = "Logged in";
                             this.$router.replace("/");
+                            this.$store.commit("successSnackbar", "Logged in as guest");
                         })
                         .catch(error => {
-                            console.error(error);
+                            error;
+                            this.$router.replace("/login");
+                            this.$store.commit("errorSnackbar", "Failed to login as guest");
                         });
                 })
                 .catch(error => {
-                    console.error(error);
+                    error;
+                    this.$router.replace("/");
+                    this.$store.commit("errorSnackbar", "Failed to login as guest");
                 });
         },
         makeId(length) {

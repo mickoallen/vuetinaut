@@ -31,7 +31,7 @@ public class UserRepository {
         return Single.fromCallable(() -> {
             try {
                 userDao.insert(user);
-            }catch (DataAccessException e){
+            } catch (DataAccessException e) {
                 logger.error("Failed to create user: {}", user, e);
                 throw e;
             }
@@ -66,16 +66,17 @@ public class UserRepository {
 
     public Single<User> fetchFromCredentials(String username, String hashedPassword) {
         return Single
-                .fromCallable(() -> userDao
-                        .configuration()
-                        .dsl()
-                        .selectFrom(userDao.getTable())
-                        .where(field(com.mick.vuetinaut.jooq.model.tables.User.USER.USERNAME)
-                                .eq(username))
-                        .and(field(com.mick.vuetinaut.jooq.model.tables.User.USER.PASSWORD)
-                                .eq(hashedPassword))
-                        .fetchOptionalInto(User.class)
-                        .orElseThrow(NotFoundException::new)
+                .fromCallable(() ->
+                        userDao
+                                .configuration()
+                                .dsl()
+                                .selectFrom(userDao.getTable())
+                                .where(field(com.mick.vuetinaut.jooq.model.tables.User.USER.USERNAME)
+                                        .eq(username))
+                                .and(field(com.mick.vuetinaut.jooq.model.tables.User.USER.PASSWORD)
+                                        .eq(hashedPassword))
+                                .fetchOptionalInto(User.class)
+                                .orElseThrow(NotFoundException::new)
                 )
                 .subscribeOn(Schedulers.io());
     }

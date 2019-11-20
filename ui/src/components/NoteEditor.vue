@@ -156,10 +156,6 @@ export default {
     },
 
     watch: {
-        $route(to, from) {
-            // react to route changes...
-            console.log("Going from " + from + " to " + to);
-        },
         selectedNoteUuid() {
             this.deleteOverlay = false;
             this.shareOverlay = false;

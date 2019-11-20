@@ -50,7 +50,6 @@
                 </v-row>
             </v-col>
         </v-container>
-        <v-snackbar :color="getSnackColor" v-model="showSnack">{{ snackMessage }}</v-snackbar>
     </div>
 </template>
 
@@ -63,18 +62,12 @@ export default {
         return {
             username: "",
             password: "",
-            snackError: false,
-            showSnack: false,
-            snackMessage: "",
             valid: true,
             nameRules: [v => !!v || "Required"]
         };
     },
 
     computed: {
-        getSnackColor() {
-            return this.snackError ? "error" : "success";
-        }
     },
 
     props: {
@@ -96,21 +89,12 @@ export default {
                 .post(SERVER_URL + "/login", loginRequest)
                 .then(response => {
                     response;
-                    this.showSnack = true;
-                    this.snackError = false;
-                    this.snackMessage = "Logged in";
-                    this.$router.replace("/");
+                    this.$store.commit("successSnackbar", "Logged in");
+                    this.$router.replace("/notes");
                 })
                 .catch(error => {
-                    this.showSnack = true;
-                    this.snackError = true;
-                    this.snackMessage = "Error logging in";
-
-                    if (error.response.status === 400) {
-                        this.snackMessage = "Username/password invalid";
-                    } else {
-                        this.snackMessage = error;
-                    }
+                    error;
+                    this.$store.commit("errorSnackbar", "Invalid username/password");
                 });
         }
     }

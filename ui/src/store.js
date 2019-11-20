@@ -20,7 +20,10 @@ export default new Vuex.Store({
     unsavedNotes: [],
     ignoreNextEditEvent: true,
     noteHasBeenEdited: false,
-    deleteOverlay: false
+    deleteOverlay: false,
+
+    successMessage: { message: null, time: null },
+    errorMessage: { message: null, time: null }
   },
   mutations: {
     getCurrentUser(state) {
@@ -30,7 +33,7 @@ export default new Vuex.Store({
           state.currentUser = response.data;
         })
         .catch(error => {
-          console.log(error);
+          this.commit("apiError", error);
         });
     },
 
@@ -42,7 +45,7 @@ export default new Vuex.Store({
           this.commit("setSelectedNote");
         })
         .catch(error => {
-          console.log(error);
+          this.commit("apiError", error);
         });
     },
 
@@ -97,9 +100,10 @@ export default new Vuex.Store({
         .then(response => {
           state.notes.push(response.data);
           this.commit("selectNote", response.data);
+          this.commit("successSnackbar", "Created " + response.data.name);
         })
         .catch(error => {
-          console.log(error);
+          this.commit("apiError", error);
         });
     },
 
@@ -132,7 +136,7 @@ export default new Vuex.Store({
           state.notes.push(response.data);
         })
         .catch(error => {
-          console.error(error);
+          this.commit("apiError", error);
         });
     },
 
@@ -145,10 +149,11 @@ export default new Vuex.Store({
             state.notes.splice(indexOfDeletedNote, 1);
 
             this.commit("setSelectedNote");
+            this.commit("successSnackbar", "Deleted");
           }
         })
         .catch(error => {
-          console.log(error);
+          this.commit("apiError", error);
         });
     },
 
@@ -164,10 +169,28 @@ export default new Vuex.Store({
           router.replace("/login");
         })
         .catch(error => {
-          console.error(error);
+          this.commit("apiError", error);
         });
-    }
+    },
 
+    successSnackbar(state, message) {
+      state.successMessage = { message: message, time: Date.now() };
+    },
+
+    errorSnackbar(state, message) {
+      state.errorMessage = { message: message, time: Date.now() };
+    },
+
+    apiError(state, error) {
+      if (error.response.status == 401) {
+        if (router.currentRoute.path != "/login") {
+          this.commit("errorSnackbar", "Login required");
+          router.replace("/login");
+        }
+      } else {
+        this.commit("errorSnackbar", "Something went wrong");
+      }
+    }
   },
   actions: {
 
