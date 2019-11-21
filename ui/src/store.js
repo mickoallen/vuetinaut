@@ -122,6 +122,11 @@ export default new Vuex.Store({
     },
 
     saveNote(state, noteToSave) {
+      //only save if name is valid
+      if (noteToSave.name == null || noteToSave.name == "") {
+        return;
+      }
+
       let indexOfNote = state.unsavedNotes.map(note => note.uuid).indexOf(noteToSave.uuid);
       state.unsavedNotes.splice(indexOfNote, 1);
 

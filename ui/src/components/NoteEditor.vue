@@ -9,6 +9,7 @@
                             rounded
                             label="Name"
                             @keyup.native="textChanged"
+                            :rules="nameRules"
                             v-model="computedSelectedNote.name"
                         ></v-text-field>
                     </v-card-title>
@@ -120,6 +121,7 @@ export default {
 
     data() {
         return {
+            nameRules: [v => !!v || "Name is required"],
             customToolbar: [
                 ["bold", "italic", "underline"],
                 [{ list: "ordered" }, { list: "bullet" }],

@@ -89,19 +89,32 @@ export default {
                 .put(SERVER_URL + "/users", createUserRequest)
                 .then(response => {
                     response;
-                    this.createAccountResponseSuccessSnackbar = true;
-                    this.createAccountResponseMessage =
-                        "Account created successfully!";
+                    this.login();
                 })
                 .catch(error => {
-                    this.createAccountResponseErrorSnackbar = true;
-
                     if (error.response.status === 400) {
-                        this.createAccountResponseMessage =
-                            "Username/password invalid";
+                        this.$store.commit("errorSnackbar", "Invalid username/password")
                     } else {
-                        this.createAccountResponseMessage;
+                        this.$store.commit("errorSnackbar", "Something went wrong creating account")
                     }
+                });
+        },
+        login() {
+            var loginRequest = {
+                username: this.username,
+                password: this.passwordOne
+            };
+
+            axios
+                .post(SERVER_URL + "/login", loginRequest)
+                .then(response => {
+                    response;
+                    this.$store.commit("successSnackbar", "Logged in");
+                    this.$router.replace("/notes");
+                })
+                .catch(error => {
+                    error;
+                    this.$store.commit("errorSnackbar", "Invalid username/password");
                 });
         }
     }

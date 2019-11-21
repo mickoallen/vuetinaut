@@ -4,31 +4,29 @@
 
         <v-app-bar dense app clipped-left clipped-right>
             <v-btn small rounded text @click.stop="noteNavigation = !noteNavigation">
-                <v-icon color="primary" >mdi-menu</v-icon>
+                <v-icon color="primary">mdi-menu</v-icon>
             </v-btn>
             <v-toolbar-title class="mr-12 align-center">
-                <span class="title">MNotes</span>   
+                <span class="title">MNotes</span>
             </v-toolbar-title>
             <v-spacer />
-            <v-btn small rounded @click.stop="logout" class="font-weight-bold" color="primary">Logout</v-btn>
-            <!-- <v-btn small rounded text @click.stop="infoPanel = !infoPanel">
-                <v-icon color="primary" v-if="infoPanel">mdi-arrow-right</v-icon>
-                <v-icon color="primary" v-if="!infoPanel">mdi-arrow-left</v-icon>
-            </v-btn> -->
+            <v-btn
+                small
+                rounded
+                @click.stop="logout"
+                class="font-weight-bold"
+                color="primary"
+            >Logout</v-btn>
         </v-app-bar>
 
         <v-navigation-drawer v-model="noteNavigation" app clipped>
             <NoteNavigation />
         </v-navigation-drawer>
 
-        <!-- <v-navigation-drawer v-model="infoPanel" app clipped right>
-            <InfoPanel />
-        </v-navigation-drawer> -->
-
         <NoteEditor />
 
-        <v-card class="grey" max-width="300" v-if="userIsGuest"> 
-            <v-card-title >Guest Access</v-card-title>
+        <v-card class="grey" max-width="300" v-if="userIsGuest">
+            <v-card-title>Guest Access</v-card-title>
             <v-card-text>As a guest you have full access to all the features. This account will be delete in 24 hours.</v-card-text>
         </v-card>
     </div>
@@ -82,7 +80,7 @@ export default {
             }
             return pageTitle;
         },
-        userIsGuest(){
+        userIsGuest() {
             return this.currentUser.userType == "GUEST";
         }
     },

@@ -1,23 +1,25 @@
 <template>
-    <v-list dense>
-        <v-list-item link @click.stop="createNote">
-            <v-list-item-title class="font-weight-bold">CREATE NEW NOTE</v-list-item-title>
-            <v-icon color="primary">mdi-file-plus-outline</v-icon>
-        </v-list-item>
-        <v-list-item
-            @click.stop="selectNote(note)"
-            v-for="note in sortedNotes"
-            :key="note.uuid"
-            link
-            :class="`elevation-${note.uuid == selectedNoteUuid ? 2 : 0}` "
-            dense
-        >
-            <v-list-item-title>
-                <span v-if="noteIsUnsaved(note.uuid)">*</span>
-                {{note.name}}
-            </v-list-item-title>
-        </v-list-item>
-    </v-list>
+    <div>
+        <v-list dense>
+            <v-list-item link @click.stop="createNote">
+                <v-list-item-title class="font-weight-bold">CREATE NEW NOTE</v-list-item-title>
+                <v-icon color="primary">mdi-file-plus-outline</v-icon>
+            </v-list-item>
+            <v-list-item
+                @click.stop="selectNote(note)"
+                v-for="note in sortedNotes"
+                :key="note.uuid"
+                link
+                :class="`elevation-${note.uuid == selectedNoteUuid ? 2 : 0}` "
+                dense
+            >
+                <v-list-item-title>
+                    <span v-if="noteIsUnsaved(note.uuid)">*</span>
+                    {{note.name}}
+                </v-list-item-title>
+            </v-list-item>
+        </v-list>
+    </div>
 </template>
 
 <script>
@@ -28,7 +30,8 @@ export default {
         ...mapState({
             notes: state => state.notes,
             selectedNoteUuid: state => state.selectedNoteUuid,
-            unsavedNotes: state => state.unsavedNotes
+            unsavedNotes: state => state.unsavedNotes,
+            currentUser: state => state.currentUser
         }),
 
         sortedNotes() {
