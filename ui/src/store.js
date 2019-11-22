@@ -18,6 +18,7 @@ export default new Vuex.Store({
     selectedNoteUuid: 1,
     notes: [],
     unsavedNotes: [],
+    users: [],
     ignoreNextEditEvent: true,
     noteHasBeenEdited: false,
     deleteOverlay: false,
@@ -195,9 +196,26 @@ export default new Vuex.Store({
       } else {
         this.commit("errorSnackbar", "Something went wrong");
       }
+    },
+    getUser(state, userUuid) {
+      if (state.users.filter(user => user.uuid == userUuid)[0] == null) {
+        axios
+          .get(SERVER_URL + "/users/" + userUuid)
+          .then(response => {
+            state.users.push(response.data);
+          })
+          .catch(error => {
+            this.commit("apiError", error);
+          });
+      }
     }
   },
   actions: {
 
+  },
+  getters: {
+    getUser(state, userUuid) {
+      return state.users.filter(user => user.uuid == userUuid)[0];
+    }
   }
 })

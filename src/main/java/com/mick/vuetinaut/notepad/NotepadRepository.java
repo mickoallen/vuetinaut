@@ -97,12 +97,12 @@ public class NotepadRepository {
                         throw new NotFoundException();
                     }
 
-                    if (!notepad.getCreatorUserUuid().equals(userUuid)) {
-                        throw new AuthorizationException("Cannot delete notepad you don't own");
+                    //actually delete if you own the note
+                    if (notepad.getCreatorUserUuid().equals(userUuid)) {
+                        notepadDao.delete(notepad);
                     }
 
                     notepadUserShareDao.delete(notepadUserShareDao.fetchByNotepadUuid(notepadUuid));
-                    notepadDao.delete(notepad);
                 })
                 .subscribeOn(Schedulers.io());
     }

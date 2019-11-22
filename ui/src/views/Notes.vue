@@ -92,11 +92,13 @@ export default {
 
                 //safe if 2 seconds has passed since the last edit
                 if (now > unsavedNote.time + 2000) {
-                    this.saveNote(
-                        this.notes.filter(
-                            note => note.uuid == unsavedNote.uuid
-                        )[0]
-                    );
+                    var noteToSave = this.notes.filter(
+                        note => note.uuid == unsavedNote.uuid
+                    )[0];
+
+                    if (noteToSave != null) {
+                        this.saveNote(noteToSave);
+                    }
                 }
             });
         },

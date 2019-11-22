@@ -22,8 +22,12 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-label>Last saved {{getRelativeUpdateTime(computedSelectedNote.lastUpdatedTimestamp)}}</v-label>
+
                         <v-spacer />
-                        <v-btn @click="openShareOverlay" small rounded text>
+
+                        <v-label v-if="!userIsNoteOwner">Note shared by: {{notepadOwner.username}}</v-label>
+
+                        <v-btn v-if="userIsNoteOwner" @click="openShareOverlay" small rounded text>
                             <v-icon color="primary">mdi-share-variant</v-icon>
                         </v-btn>
                         <v-btn @click="deleteOverlay = !deleteOverlay" small rounded text>
@@ -77,10 +81,10 @@
 
                         <v-overlay v-model="deleteOverlay" absolute>
                             <v-card light>
-                                <v-card-title
-                                    class="justify-center"
-                                >Delete Note</v-card-title>
-                                <v-card-text class="text-center black--text">Confirm delete of note '{{computedSelectedNote.name}}'</v-card-text>
+                                <v-card-title class="justify-center">Delete Note</v-card-title>
+                                <v-card-text
+                                    class="text-center black--text"
+                                >Confirm delete of note '{{computedSelectedNote.name}}'</v-card-text>
                                 <v-card-actions>
                                     <v-spacer />
                                     <v-btn
@@ -142,7 +146,9 @@ export default {
         ...mapState({
             notes: state => state.notes,
             selectedNoteUuid: state => state.selectedNoteUuid,
-            ignoreNextEditEvent: state => state.ignoreNextEditEvent
+            ignoreNextEditEvent: state => state.ignoreNextEditEvent,
+            currentUser: state => state.currentUser,
+            allUsers: state => state.users
         }),
         computedSelectedNote() {
             var selectedNote = this.notes.filter(
@@ -154,6 +160,19 @@ export default {
                 };
             }
             return selectedNote;
+        },
+        userIsNoteOwner() {
+            return this.computedSelectedNote.userUuid == this.currentUser.uuid;
+        },
+        notepadOwner() {
+            var notepadOwner = this.allUsers.filter(
+                user => user.uuid == this.computedSelectedNote.userUuid
+            )[0];
+
+            if(notepadOwner == null){
+                return {username:"Loading..."}
+            }
+            return notepadOwner;
         }
     },
 
@@ -161,6 +180,12 @@ export default {
         selectedNoteUuid() {
             this.deleteOverlay = false;
             this.shareOverlay = false;
+            if (this.computedSelectedNote.userUuid != null) {
+                this.$store.commit(
+                    "getUser",
+                    this.computedSelectedNote.userUuid
+                );
+            }
         },
         shareOverlay(shareOverlayValue) {
             if (!shareOverlayValue) {
@@ -212,7 +237,22 @@ export default {
             this.$store.commit("deleteNote", this.selectedNoteUuid);
         },
         shareNote() {
-            console.info(this.model);
+            axios
+                .post(
+                    SERVER_URL +
+                        "/notepads/" +
+                        this.selectedNoteUuid +
+                        "/share?user=" +
+                        this.selectedUser.uuid
+                )
+                .then(response => {
+                    response;
+                    this.$store.commit("successSnackbar", "Note shared");
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.$store.commit("errorSnackbar", "Note share failed");
+                });
         },
         openShareOverlay() {
             this.shareOverlay = true;
