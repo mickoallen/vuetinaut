@@ -1,7 +1,6 @@
 package com.mick.vuetinaut.notepad;
 
 import com.mick.vuetinaut.db.TimeProvider;
-import com.mick.vuetinaut.exceptions.AuthorizationException;
 import com.mick.vuetinaut.exceptions.NotFoundException;
 import com.mick.vuetinaut.jooq.model.tables.daos.NotepadDao;
 import com.mick.vuetinaut.jooq.model.tables.daos.NotepadUserShareDao;
@@ -21,15 +20,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Singleton
-public class NotepadRepository {
-    private static final Logger logger = LoggerFactory.getLogger(NotepadRepository.class);
+public class NoteRepository {
+    private static final Logger logger = LoggerFactory.getLogger(NoteRepository.class);
 
     private final NotepadDao notepadDao;
     private final NotepadUserShareDao notepadUserShareDao;
     private final TimeProvider timeProvider;
 
     @Inject
-    public NotepadRepository(
+    public NoteRepository(
             final NotepadDao notepadDao,
             final NotepadUserShareDao notepadUserShareDao,
             final TimeProvider timeProvider) {
@@ -39,7 +38,9 @@ public class NotepadRepository {
     }
 
     public Completable create(Notepad notepad) {
-        return Completable.fromAction(() -> notepadDao.insert(notepad));
+        return Completable
+                .fromAction(() -> notepadDao.insert(notepad))
+                .subscribeOn(Schedulers.io());
     }
 
     public Single<List<Notepad>> getNotepadsForUser(final UUID userUuid) {
@@ -94,7 +95,7 @@ public class NotepadRepository {
                     Notepad notepad = notepadDao.fetchOneByUuid(notepadUuid);
 
                     if (notepad == null) {
-                        throw new NotFoundException();
+                        throw new NotFoundException("Note not found");
                     }
 
                     //actually delete if you own the note
@@ -118,13 +119,15 @@ public class NotepadRepository {
     }
 
     public Completable shareNotepadWithUser(Notepad notepad, UUID shareWithUserUuid) {
-        return Completable.fromAction(() -> {
-            NotepadUserShare notepadUserShare = new NotepadUserShare();
-            notepadUserShare.setNotepadUuid(notepad.getUuid());
-            notepadUserShare.setUserUuid(shareWithUserUuid);
-            notepadUserShare.setUuid(UUID.randomUUID());
-            notepadUserShare.setDateCreated(Timestamp.from(timeProvider.now()));
-            notepadUserShareDao.insert(notepadUserShare);
-        });
+        return Completable
+                .fromAction(() -> {
+                    NotepadUserShare notepadUserShare = new NotepadUserShare();
+                    notepadUserShare.setNotepadUuid(notepad.getUuid());
+                    notepadUserShare.setUserUuid(shareWithUserUuid);
+                    notepadUserShare.setUuid(UUID.randomUUID());
+                    notepadUserShare.setDateCreated(Timestamp.from(timeProvider.now()));
+                    notepadUserShareDao.insert(notepadUserShare);
+                })
+                .subscribeOn(Schedulers.io());
     }
 }

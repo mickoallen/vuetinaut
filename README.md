@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/mickoallen/vuetinaut.svg?branch=master)](https://travis-ci.com/mickoallen/vuetinaut)
 # Vuetinaut
 
 Template project for prototyping cool things.

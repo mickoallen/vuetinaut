@@ -3,6 +3,9 @@ package com.mick.vuetinaut.db;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Property;
 
+/**
+ * Configuration for db connection
+ */
 @ConfigurationProperties("db")
 public class DatabaseConfig {
 

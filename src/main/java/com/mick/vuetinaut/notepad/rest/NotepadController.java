@@ -1,7 +1,7 @@
 package com.mick.vuetinaut.notepad.rest;
 
 import com.mick.vuetinaut.exceptions.ErrorHandler;
-import com.mick.vuetinaut.notepad.NotepadService;
+import com.mick.vuetinaut.notepad.NoteService;
 import com.mick.vuetinaut.security.PrincipalUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -24,12 +24,12 @@ public class NotepadController {
     public static final String NOTEPADS_ROUTE = "/api/notepads";
 
     private static final String NOTEPAD_UUID_PATH_VARIABLE = "notepadUuid";
-    private final NotepadService notepadService;
+    private final NoteService noteService;
 
     @Inject
     public NotepadController(
-            final NotepadService notepadService) {
-        this.notepadService = notepadService;
+            final NoteService noteService) {
+        this.noteService = noteService;
     }
 
     @Put(
@@ -41,7 +41,7 @@ public class NotepadController {
             final @Body @Valid NotepadDto notepadDto,
             final Principal principal
     ) {
-        return notepadService
+        return noteService
                 .createNotepad(NotepadMapper.toEntity(notepadDto), PrincipalUtils.getUserUuid(principal))
                 .map(NotepadMapper::toDto)
                 .map(HttpResponse::created)
@@ -60,7 +60,7 @@ public class NotepadController {
             final Principal principal
     ) {
         //validate dto and path match TODO
-        return notepadService
+        return noteService
                 .editNotepad(NotepadMapper.toEntity(notepadDto), PrincipalUtils.getUserUuid(principal))
                 .map(NotepadMapper::toDto)
                 .map(HttpResponse::ok)
@@ -78,7 +78,7 @@ public class NotepadController {
             final @QueryValue("user") UUID shareWithUserUuid,
             final Principal principal
     ) {
-        return notepadService
+        return noteService
                 .shareNotepad(notepadUuid, shareWithUserUuid, PrincipalUtils.getUserUuid(principal))
                 .andThen(Single.just(HttpResponse.ok("OK")))
                 .onErrorResumeNext(ErrorHandler::handleError);
@@ -89,7 +89,7 @@ public class NotepadController {
     )
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public Single<MutableHttpResponse<List<NotepadDto>>> getNotepads(Principal principal) {
-        return notepadService
+        return noteService
                 .getNotepadsForUser(PrincipalUtils.getUserUuid(principal))
                 .map(NotepadMapper::toDtos)
                 .map(HttpResponse::ok)
@@ -102,7 +102,7 @@ public class NotepadController {
     )
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public Single<MutableHttpResponse<NotepadDto>> getNotepad(@PathVariable(NOTEPAD_UUID_PATH_VARIABLE) UUID notepadUuid, Principal principal) {
-        return notepadService
+        return noteService
                 .getNotepad(notepadUuid, PrincipalUtils.getUserUuid(principal))
                 .map(NotepadMapper::toDto)
                 .map(HttpResponse::ok)
@@ -115,7 +115,7 @@ public class NotepadController {
     )
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public Single<MutableHttpResponse<String>> deleteNotepad(@PathVariable(NOTEPAD_UUID_PATH_VARIABLE) UUID notepadUuid, Principal principal) {
-        return notepadService
+        return noteService
                 .deleteNotepad(notepadUuid, PrincipalUtils.getUserUuid(principal))
                 .andThen(Single.just(HttpResponse.ok("OK")))
                 .onErrorResumeNext(ErrorHandler::handleError);

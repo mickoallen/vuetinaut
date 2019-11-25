@@ -1,5 +1,6 @@
 package com.mick.vuetinaut.exceptions;
 
+
 public class AuthorizationException extends VuetinautException {
     public AuthorizationException() {
     }
