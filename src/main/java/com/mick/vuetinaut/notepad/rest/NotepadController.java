@@ -18,6 +18,9 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Rest controller for notes
+ */
 @Validated
 @Controller(NotepadController.NOTEPADS_ROUTE)
 public class NotepadController {

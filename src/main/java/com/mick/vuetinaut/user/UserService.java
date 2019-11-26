@@ -14,6 +14,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Business logic for users.
+ */
 @Singleton
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -29,34 +32,53 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * @param user     {@link} User to create.
+     * @param password Raw password for the user.
+     * @return The created {@link User}.
+     * @throws UsernameAlreadyExistsException if the username is already taken
+     */
     public Single<User> createUser(User user, String password) throws UsernameAlreadyExistsException {
 
         user.setUuid(UUID.randomUUID());
         user.setPassword(passwordService.getPasswordHash(password));
         user.setDateCreated(Timestamp.from(Instant.now()));
 
-        return userRepository.fetchByUsername(user.getUsername())
+        return userRepository.getByUsername(user.getUsername())
                 .doOnSuccess(existingUser -> {
                     logger.warn("Cannot create user. Username is already used");
                     throw new UsernameAlreadyExistsException("Cannot create user. Username is already used");
                 })
                 .onErrorResumeNext(throwable -> {
                     if (NotFoundException.class.isAssignableFrom(throwable.getClass())) {
-                        return userRepository.insert(user);
+                        return userRepository.create(user);
                     }
                     return Single.error(throwable);
                 });
     }
 
+    /**
+     * @param userUuid {@link UUID} to fetch the user by.
+     * @return {@link User} with the given uuid.
+     */
     public Single<User> getUserFromUuid(UUID userUuid) {
-        return userRepository.fetchByUuid(userUuid);
+        return userRepository.getByUuid(userUuid);
     }
 
-    public Single<User> getUserFromCredentials(String username, String password) throws NotFoundException {
+    /**
+     * @param username Username of the {@link User}.
+     * @param password Password of the {@link User}.
+     * @return {@link User} matching the credentials
+     */
+    public Single<User> getUserFromCredentials(String username, String password) {
         return userRepository.fetchFromCredentials(username, passwordService.getPasswordHash(password));
     }
 
-    public Single<List<User>> searchByUsername(String username) {
-        return userRepository.searchByUsername(username);
+    /**
+     * @param usernameContains Search for users whos username contains this.
+     * @return List of {@link User}
+     */
+    public Single<List<User>> searchByUsernameContains(String usernameContains) {
+        return userRepository.searchByUsernameContains(usernameContains);
     }
 }

@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Rest controller for users
+ */
 @Controller(UserController.USERS_ROUTE)
 public class UserController {
     public static final String USERS_ROUTE = "/api/users";
@@ -49,7 +52,7 @@ public class UserController {
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public Single<MutableHttpResponse<List<UserDto>>> searchByUsername(final @QueryValue("username") String username, final Principal principal) {
         return userService
-                .searchByUsername(username)
+                .searchByUsernameContains(username)
                 .map(UserMapper::toDtos)
                 .map(userDtos -> userDtos //filter current user for list
                         .stream()

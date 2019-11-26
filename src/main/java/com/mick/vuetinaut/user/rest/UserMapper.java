@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mapping for {@link User}/{@link UserDto}
+ */
 public class UserMapper {
     private static final Logger logger = LoggerFactory.getLogger(UserMapper.class);
 
