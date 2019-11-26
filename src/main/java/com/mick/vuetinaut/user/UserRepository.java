@@ -3,6 +3,8 @@ package com.mick.vuetinaut.user;
 import com.mick.vuetinaut.exceptions.NotFoundException;
 import com.mick.vuetinaut.jooq.model.tables.daos.UserDao;
 import com.mick.vuetinaut.jooq.model.tables.pojos.User;
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import org.jooq.exception.DataAccessException;
@@ -11,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -150,6 +155,34 @@ public class UserRepository {
                         logger.trace("]");
                     }
                 })
+                .subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * @param user Delete the given {@link User}.
+     */
+    public Completable deleteUser(User user) {
+        return Completable.fromAction(() -> userDao.delete(user));
+    }
+
+    /**
+     * @return Get list of guest users who are older than 24 hours.
+     */
+    public Flowable<User> getExpiredGuestUsers() {
+        return Flowable
+                .fromIterable(
+                        userDao
+                                .configuration()
+                                .dsl()
+                                .selectFrom(userDao.getTable())
+                                .where(
+                                        field(com.mick.vuetinaut.jooq.model.tables.User.USER.USER_TYPE.eq(UserType.GUEST.name()))
+                                )
+                                .and(
+                                        field(com.mick.vuetinaut.jooq.model.tables.User.USER.DATE_CREATED.lessThan(Timestamp.from(Instant.now().minus(24, ChronoUnit.HOURS))))
+                                )
+                                .fetchInto(User.class)
+                )
                 .subscribeOn(Schedulers.io());
     }
 }

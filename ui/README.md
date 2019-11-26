@@ -1,5 +1,5 @@
 # Vuetinaut UI
-
+This project should be taken with a few hundred grains of salt, i'm not a front end dev.
 ## Project setup
 ```
 npm install

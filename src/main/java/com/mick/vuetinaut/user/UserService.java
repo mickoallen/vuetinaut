@@ -2,7 +2,9 @@ package com.mick.vuetinaut.user;
 
 import com.mick.vuetinaut.exceptions.NotFoundException;
 import com.mick.vuetinaut.jooq.model.tables.pojos.User;
+import com.mick.vuetinaut.notepad.NoteService;
 import com.mick.vuetinaut.security.PasswordService;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +25,16 @@ public class UserService {
 
     private final PasswordService passwordService;
     private final UserRepository userRepository;
+    private final NoteService noteService;
 
     @Inject
     public UserService(
             final PasswordService passwordService,
-            final UserRepository userRepository) {
+            final UserRepository userRepository,
+            final NoteService noteService) {
         this.passwordService = passwordService;
         this.userRepository = userRepository;
+        this.noteService = noteService;
     }
 
     /**
@@ -80,5 +85,26 @@ public class UserService {
      */
     public Single<List<User>> searchByUsernameContains(String usernameContains) {
         return userRepository.searchByUsernameContains(usernameContains);
+    }
+
+    /**
+     * @param user Delete the given {@link User}.
+     */
+    public Completable deleteUser(User user){
+        return userRepository.deleteUser(user);
+    }
+
+    /**
+     * Delete the expired guest users.
+     * its functions like this that me really dislike rxjava, or love it?
+     */
+    public Completable deleteExpiredGuestUsers(){
+        return userRepository
+                .getExpiredGuestUsers()
+                .flatMapSingle(user ->
+                        deleteUser(user)
+                                .andThen(Single.just(user)) // pass the user on
+                )
+                .flatMapCompletable(noteService::deleteNotesForUser);
     }
 }

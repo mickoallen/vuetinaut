@@ -4,7 +4,9 @@ import com.mick.vuetinaut.db.TimeProvider;
 import com.mick.vuetinaut.exceptions.AuthorizationException;
 import com.mick.vuetinaut.exceptions.NotFoundException;
 import com.mick.vuetinaut.jooq.model.tables.pojos.Notepad;
+import com.mick.vuetinaut.jooq.model.tables.pojos.User;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 import javax.inject.Inject;
@@ -127,5 +129,11 @@ public class NoteService {
                     return notepad;
                 })
                 .flatMapCompletable(notepad -> noteRepository.shareNotepadWithUser(notepad, shareWithUserUuid));
+    }
+
+    public Completable deleteNotesForUser(User user) {
+        return noteRepository.getNotepadsForUser(user.getUuid())
+                .flatMapObservable(Observable::fromIterable)
+                .flatMapCompletable(note -> deleteNotepad(note.getUuid(), user.getUuid()));
     }
 }
