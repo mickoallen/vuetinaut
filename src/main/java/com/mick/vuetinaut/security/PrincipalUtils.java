@@ -13,6 +13,11 @@ import java.util.UUID;
 public final class PrincipalUtils {
     private static final Logger logger = LoggerFactory.getLogger(PrincipalUtils.class);
 
+    /**
+     * @param principal to get the {@link UUID} for.
+     * @return {@link UUID} of the given principal
+     * @throws AuthenticationException if the {@link UUID} is missing from the principal, or invalid.
+     */
     public static UUID getUserUuid(final Principal principal) {
         String name = principal.getName();
 

@@ -11,6 +11,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
 
+/**
+ * Authenticate via username password.
+ */
 @Singleton
 public class AuthenticationProviderUserPassword implements AuthenticationProvider {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationProviderUserPassword.class);
@@ -40,10 +43,11 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
      * @return
      */
     private Flowable<AuthenticationResponse> getUserDetailsFromAuthenticationRequest(UsernamePasswordCredentials authenticationRequest) {
-        return userService.getUserFromCredentials(
-                authenticationRequest.getIdentity(),
-                authenticationRequest.getSecret()
-        ).toFlowable()
+        return userService
+                .getUserFromCredentials(
+                        authenticationRequest.getIdentity(),
+                        authenticationRequest.getSecret()
+                ).toFlowable()
                 .map(user -> new UserDetails(user.getUuid().toString(), List.of()));
     }
 }

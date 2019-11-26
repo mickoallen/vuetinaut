@@ -68,8 +68,8 @@ public class NoteService {
      * @param notepadUuid {@link UUID} of the note to get.
      * @param userUuid    {@link UUID} of the user getting the note.
      * @return The request note.
-     * @throws {@link com.mick.vuetinaut.exceptions.NotFoundException} if the notepad doesn't exist,
-     *                or the user doesnt have access to it.
+     * @throws NotFoundException if the notepad doesn't exist,
+     *                           or the user doesnt have access to it.
      */
     public Single<Notepad> getNotepad(UUID notepadUuid, UUID userUuid) {
         return noteRepository.getNotepad(notepadUuid, userUuid);
@@ -81,8 +81,8 @@ public class NoteService {
      * @param notepadEdit The edited note, only editable fields will be updated.
      * @param userUuid    {@link UUID} of the user making the edit
      * @return The edited note
-     * @throws {@link com.mick.vuetinaut.exceptions.NotFoundException} if the notepad doesn't exist,
-     *                or the user doesnt have access to it.
+     * @throws NotFoundException if the notepad doesn't exist,
+     *                           or the user doesnt have access to it.
      */
     public Single<Notepad> editNotepad(Notepad notepadEdit, UUID userUuid) {
         return getNotepad(notepadEdit.getUuid(), userUuid)
@@ -102,7 +102,7 @@ public class NoteService {
      *
      * @param notepadUuid {@link UUID} of the note to delete.
      * @param userUuid    {@link UUID} of the user performing the delete,
-     * @throws {@link NotFoundException} if the notepad doesn't exist.
+     * @throws NotFoundException if the notepad doesn't exist.
      */
     public Completable deleteNotepad(UUID notepadUuid, UUID userUuid) {
         return noteRepository.deleteNotepad(notepadUuid, userUuid);
@@ -114,8 +114,8 @@ public class NoteService {
      * @param notepadUuid             {@link UUID} of note to be shared.
      * @param shareWithUserUuid       {@link UUID} of user to share the note with.
      * @param userPerformingShareUuid {@link UUID} of the user performing the share.
-     * @throws {@link NotFoundException} if the note doesn't exist.
-     * @throws {@link AuthorizationException} if the user isn't the creator of the note they are trying to share.
+     * @throws NotFoundException      if the note doesn't exist.
+     * @throws AuthorizationException if the user isn't the creator of the note they are trying to share.
      */
     public Completable shareNotepad(UUID notepadUuid, UUID shareWithUserUuid, UUID userPerformingShareUuid) {
         return noteRepository

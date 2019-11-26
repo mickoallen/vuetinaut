@@ -18,14 +18,14 @@ import java.time.temporal.TemporalAmount;
 import java.util.Optional;
 
 /**
- * Default Micronaut login handler does a redirect on login, i'd rather not do that.
+ * Need to override the default Micronaut login handler as it does a redirect on login, oauth standards aside, i'd rather the front end app handle that.
  */
 @Requires(
         property = "micronaut.security.token.jwt.cookie.redirect.enabled",
         value = "false"
 )
 @Singleton
-@Primary
+@Primary /* need to set it as the primary bean till my pr is merged - https://github.com/micronaut-projects/micronaut-security/pull/97 */
 public class JwtCookieNonRedirectingLoginHandler implements LoginHandler {
     protected final JwtCookieConfiguration jwtCookieConfiguration;
     protected final AccessRefreshTokenGenerator accessRefreshTokenGenerator;

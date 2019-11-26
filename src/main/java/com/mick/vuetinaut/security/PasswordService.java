@@ -11,6 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
+/**
+ * Handle password hashing.
+ */
 @Singleton
 public class PasswordService {
     private static final String keyFactoryInstance = "PBKDF2WithHmacSHA1";
@@ -21,6 +24,12 @@ public class PasswordService {
         this.salt = salt;
     }
 
+    /**
+     * Hash the given password.
+     *
+     * @param password Password to hash.
+     * @return Hash of the password.
+     */
     public String getPasswordHash(String password) {
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65537, 128);
         SecretKeyFactory factory;
@@ -33,7 +42,7 @@ public class PasswordService {
         try {
             return new String(factory.generateSecret(spec).getEncoded());
         } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); //oooo nice - todo
         }
     }
 }
