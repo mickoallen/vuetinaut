@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/mickoallen/vuetinaut.svg?branch=master)](https://travis-ci.com/mickoallen/vuetinaut)
+[![Build Status](https://travis-ci.com/mickoallen/vuetinaut.svg?branch=master)](https://travis-ci.com/mickoallen/vuetinaut) [![Coverage Status](https://coveralls.io/repos/github/mickoallen/vuetinaut/badge.svg?branch=master)](https://coveralls.io/github/mickoallen/vuetinaut?branch=master)
 # Vuetinaut
 
 Template project for prototyping cool things.
